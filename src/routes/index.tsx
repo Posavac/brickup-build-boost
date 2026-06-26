@@ -21,10 +21,10 @@ import { Toaster } from "@/components/ui/sonner";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "BrickUp — Vaš dom, naš zanat. Majstori za Zagreb i Osijek" },
-      { name: "description", content: "Keramika, gletanje, soboslikarstvo, struja i kućni majstor — tim majstora za Zagreb i Osijek. Brže izvođenje, jasna ponuda, bez iznenađenja." },
+      { title: "BrickUp — Vaš dom, naš zanat. Majstori za Zagreb i Slavoniju" },
+      { name: "description", content: "Keramika, gletanje, soboslikarstvo, struja i kućni majstor — tim majstora za Zagreb i Slavoniju. Brže izvođenje, jasna ponuda, bez iznenađenja." },
       { property: "og:title", content: "BrickUp — Vaš dom, naš zanat." },
-      { property: "og:description", content: "Tim majstora za završne radove. Zagreb i Osijek." },
+      { property: "og:description", content: "Tim majstora za završne radove. Zagreb i Slavonija." },
     ],
   }),
   component: Index,
@@ -48,7 +48,7 @@ const heroIcons = [
 
 const reasons = [
   { icon: Users, title: "Tim, ne pojedinac", desc: "Posao ide brže — više majstora, jedan dogovor." },
-  { icon: MapPin, title: "Pokrivamo dva grada", desc: "Zagreb i Osijek — dolazimo brzo." },
+  { icon: MapPin, title: "Pokrivamo dvije regije", desc: "Zagreb i cijela Slavonija — dolazimo brzo." },
   { icon: Building2, title: "Stan ili poslovni prostor", desc: "Radimo sve — od kupaonice do većih projekata." },
   { icon: ClipboardCheck, title: "Jasna ponuda unaprijed", desc: "Bez skrivenih troškova i iznenađenja na kraju." },
 ];
@@ -124,14 +124,14 @@ function Index() {
         <div className="relative mx-auto max-w-6xl px-5 pb-20 pt-20 md:pb-28 md:pt-28">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/70">
-              <span className="h-1.5 w-1.5 rounded-full bg-brand" /> Zagreb &amp; Osijek
+              <span className="h-1.5 w-1.5 rounded-full bg-brand" /> Zagreb &amp; Slavonija
             </span>
             <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
               BrickUp —<br />
               <span className="text-brand">Vaš dom,</span> naš zanat.
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">
-              Keramika, gletanje, soboslikarstvo, struja i majstorske usluge — sve na jednom mjestu, za Zagreb i Osijek.
+              Keramika, gletanje, soboslikarstvo, struja i majstorske usluge — sve na jednom mjestu, za Zagreb i Slavoniju.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
@@ -207,7 +207,7 @@ function Index() {
               Tim kojem možete vjerovati
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              BrickUp je tim majstora koji pokriva Zagreb i Osijek. Radimo i za privatne osobe koje renoviraju svoj dom, i za firme koje trebaju pouzdanog izvođača za veće projekte.
+              BrickUp je tim majstora koji pokriva Zagreb i Slavoniju. Radimo i za privatne osobe koje renoviraju svoj dom, i za firme koje trebaju pouzdanog izvođača za veće projekte.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
               Naš pristup je jednostavan:{" "}
@@ -217,10 +217,10 @@ function Index() {
 
           <div className="grid grid-cols-2 gap-3 md:col-span-2">
             {[
-              { k: "2", l: "grada" },
+              { k: "2", l: "regije" },
               { k: "5", l: "usluga" },
               { k: "Tim", l: "ne pojedinac" },
-              { k: "0", l: "skrivenih troškova" },
+              { k: "24h", l: "odgovor na upit" },
             ].map((s) => (
               <div key={s.l} className="rounded-xl border border-border bg-card p-5">
                 <div className="font-display text-3xl font-extrabold text-brand sm:text-4xl">{s.k}</div>
@@ -321,6 +321,11 @@ function Index() {
                 <select name="grad" required className="form-input">
                   <option value="Zagreb">Zagreb</option>
                   <option value="Osijek">Osijek</option>
+                  <option value="Slavonski Brod">Slavonski Brod</option>
+                  <option value="Vinkovci">Vinkovci</option>
+                  <option value="Vukovar">Vukovar</option>
+                  <option value="Đakovo">Đakovo</option>
+                  <option value="Ostalo (Slavonija)">Ostalo (Slavonija)</option>
                 </select>
               </Field>
               <Field label="Vrsta posla" required className="sm:col-span-2">
@@ -354,7 +359,7 @@ function Index() {
         <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:grid-cols-3 sm:items-center">
           <div>
             <Logo className="text-lg" />
-            <p className="mt-2 text-sm text-muted-foreground">Zagreb &amp; Osijek</p>
+            <p className="mt-2 text-sm text-muted-foreground">Zagreb &amp; Slavonija</p>
           </div>
           <div className="space-y-1 text-sm text-muted-foreground sm:text-center">
             <div>Telefon: <a className="text-foreground hover:text-brand" href="tel:+385913592825">091 359 2825</a></div>
