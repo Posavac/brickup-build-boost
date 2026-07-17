@@ -7,10 +7,9 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
   return (
@@ -37,15 +36,12 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          This page did not load
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Something went wrong on our end. You can try refreshing or head back home.
@@ -77,19 +73,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "BrickUp — Vaš dom, naš zanat. Majstori za Zagreb i Slavoniju" },
-      { name: "description", content: "Keramika, gletanje, soboslikarstvo, struja i kućni majstor — tim majstora za Zagreb i Slavoniju. Brže izvođenje, jasna ponuda, bez iznenađenja." },
+      { title: "BrickUp — Vas dom, nas zanat. Majstori za Zagreb i Slavoniju" },
+      { name: "description", content: "Keramika, gletanje, soboslikarstvo, struja i kucni majstor — tim majstora za Zagreb i Slavoniju." },
       { name: "author", content: "BrickUp" },
-      { property: "og:title", content: "BrickUp — Vaš dom, naš zanat." },
-      { property: "og:description", content: "Tim majstora za završne radove. Zagreb i Slavonija." },
+      { property: "og:title", content: "BrickUp — Vas dom, nas zanat." },
+      { property: "og:description", content: "Tim majstora za zavrsne radove. Zagreb i Slavonija." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap" },
@@ -103,7 +96,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="hr">
       <head>
         <HeadContent />
       </head>
@@ -120,7 +113,6 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>
   );

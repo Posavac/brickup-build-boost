@@ -14,6 +14,7 @@ import {
   Users,
   ClipboardCheck,
   Building2,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
@@ -23,27 +24,65 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "BrickUp — Vaš dom, naš zanat. Majstori za Zagreb i Slavoniju" },
       { name: "description", content: "Keramika, gletanje, soboslikarstvo, struja i kućni majstor — tim majstora za Zagreb i Slavoniju. Brže izvođenje, jasna ponuda, bez iznenađenja." },
-      { property: "og:title", content: "BrickUp — Vaš dom, naš zanat." },
-      { property: "og:description", content: "Tim majstora za završne radove. Zagreb i Slavonija." },
     ],
   }),
   component: Index,
 });
 
 const services = [
-  { icon: Hammer, title: "Keramika", desc: "Postavljanje pločica, kupaonice, podovi, precizno i uredno, bez naknadnih iznenađenja." },
-  { icon: PaintBucket, title: "Gletanje i bojanje", desc: "Glatki zidovi i stropovi spremni za bilo koju boju ili tapetu." },
-  { icon: Brush, title: "Soboslikarstvo", desc: "Unutarnje i vanjsko bojanje, dekorativni premazi, brzo i čisto." },
-  { icon: Zap, title: "Električarski radovi", desc: "Instalacije, popravci, ugradnja rasvjete — sve po propisima i sigurno." },
-  { icon: Wrench, title: "Usluge kućnog majstora", desc: "Sitni popravci, montaže, sve ono za što nemate vremena ili alata." },
+  {
+    icon: Hammer,
+    title: "Keramika",
+    desc: "Postavljanje pločica, kupaonice, podovi, precizno i uredno, bez naknadnih iznenađenja.",
+    iconBg: "#FEF3C7",
+    iconColor: "#D97706",
+    folder: "keramika",
+    count: 6,
+  },
+  {
+    icon: PaintBucket,
+    title: "Gletanje i bojanje",
+    desc: "Glatki zidovi i stropovi spremni za bilo koju boju ili tapetu.",
+    iconBg: "#EDE9FE",
+    iconColor: "#7C3AED",
+    folder: "gletanje",
+    count: 5,
+  },
+  {
+    icon: Brush,
+    title: "Soboslikarstvo",
+    desc: "Unutarnje i vanjsko bojanje, dekorativni premazi, brzo i čisto.",
+    iconBg: "#FCE7F3",
+    iconColor: "#DB2777",
+    folder: "soboslikarstvo",
+    count: 5,
+  },
+  {
+    icon: Zap,
+    title: "Električarski radovi",
+    desc: "Instalacije, popravci, ugradnja rasvjete — sve po propisima i sigurno.",
+    iconBg: "#DBEAFE",
+    iconColor: "#2563EB",
+    folder: "struja",
+    count: 5,
+  },
+  {
+    icon: Wrench,
+    title: "Usluge kućnog majstora",
+    desc: "Sitni popravci, montaže, sve ono za što nemate vremena ili alata.",
+    iconBg: "#D1FAE5",
+    iconColor: "#059669",
+    folder: "majstor",
+    count: 6,
+  },
 ];
 
 const heroIcons = [
-  { icon: Hammer, label: "Keramika" },
-  { icon: PaintBucket, label: "Gletanje" },
-  { icon: Brush, label: "Soboslikarstvo" },
-  { icon: Zap, label: "Struja" },
-  { icon: Wrench, label: "Kućni majstor" },
+  { icon: Hammer, label: "Keramika", iconBg: "#FEF3C7", iconColor: "#D97706" },
+  { icon: PaintBucket, label: "Gletanje", iconBg: "#EDE9FE", iconColor: "#7C3AED" },
+  { icon: Brush, label: "Soboslikarstvo", iconBg: "#FCE7F3", iconColor: "#DB2777" },
+  { icon: Zap, label: "Struja", iconBg: "#DBEAFE", iconColor: "#2563EB" },
+  { icon: Wrench, label: "Kućni majstor", iconBg: "#D1FAE5", iconColor: "#059669" },
 ];
 
 const reasons = [
@@ -59,11 +98,7 @@ function Logo({ className = "" }: { className?: string }) {
       <span>BrickU</span>
       <span className="relative">
         p
-        <ArrowUpRight
-          className="absolute -top-3 -right-3 text-brand"
-          strokeWidth={3}
-          size={16}
-        />
+        <ArrowUpRight className="absolute -top-3 -right-3 text-brand" strokeWidth={3} size={16} />
       </span>
     </div>
   );
@@ -71,22 +106,77 @@ function Logo({ className = "" }: { className?: string }) {
 
 function Index() {
   const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState(0);
+  const [lightbox, setLightbox] = useState<string | null>(null);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setFormError(null);
     setSubmitting(true);
     const form = e.currentTarget;
     const data = new FormData(form);
-    const subject = `Upit — ${data.get("vrsta")} (${data.get("grad")})`;
-    const body = `Ime: ${data.get("ime")}\nTelefon: ${data.get("telefon")}\nEmail: ${data.get("email")}\nGrad: ${data.get("grad")}\nVrsta posla: ${data.get("vrsta")}\n\nOpis:\n${data.get("opis")}`;
-    window.location.href = `mailto:luka.posavac091@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    toast.success("Upit pripremljen", { description: "Otvorili smo vaš mail klijent. Javljamo se u najkraćem mogućem roku." });
-    setTimeout(() => setSubmitting(false), 800);
+    const payload = {
+      ime: String(data.get("ime") ?? ""),
+      telefon: String(data.get("telefon") ?? ""),
+      email: String(data.get("email") ?? ""),
+      grad: String(data.get("grad") ?? ""),
+      vrsta: String(data.get("vrsta") ?? ""),
+      opis: String(data.get("opis") ?? ""),
+      website: String(data.get("website") ?? ""),
+    };
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await res.json().catch(() => null);
+      if (!res.ok || !result?.ok) {
+        const message = result?.error || "Slanje nije uspjelo. Pokušajte ponovno ili nas nazovite.";
+        setFormError(message);
+        toast.error("Greška", { description: message });
+        return;
+      }
+      toast.success("Upit poslan", { description: "Hvala! Javljamo se u najkraćem mogućem roku." });
+      form.reset();
+    } catch {
+      const message = "Nismo se mogli spojiti na server. Pokušajte ponovno ili nas nazovite telefonom.";
+      setFormError(message);
+      toast.error("Greška", { description: message });
+    } finally {
+      setSubmitting(false);
+    }
   };
+
+  const activeService = services[activeTab];
+  const galleryImages = Array.from({ length: activeService.count }, (_, i) =>
+    `/images/${activeService.folder}/${activeService.folder}-${i + 1}.jpg`
+  );
 
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
       <Toaster richColors position="top-center" />
+
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
+          onClick={() => setLightbox(null)}
+        >
+          <button
+            className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
+            onClick={() => setLightbox(null)}
+          >
+            <X size={20} />
+          </button>
+          <img
+            src={lightbox}
+            alt=""
+            className="max-h-[90vh] max-w-[90vw] rounded-xl object-contain shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
 
       {/* NAV */}
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
@@ -96,14 +186,11 @@ function Index() {
           </a>
           <nav className="hidden items-center gap-7 text-sm font-medium text-muted-foreground md:flex">
             <a href="#usluge" className="hover:text-foreground">Usluge</a>
+            <a href="#galerija" className="hover:text-foreground">Galerija</a>
             <a href="#o-nama" className="hover:text-foreground">O nama</a>
-            <a href="#zasto" className="hover:text-foreground">Zašto BrickUp</a>
             <a href="#kontakt" className="hover:text-foreground">Kontakt</a>
           </nav>
-          <a
-            href="#kontakt"
-            className="hidden rounded-md bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground transition hover:brightness-95 sm:inline-flex"
-          >
+          <a href="#kontakt" className="hidden rounded-md bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground transition hover:brightness-95 sm:inline-flex">
             Besplatna ponuda
           </a>
         </div>
@@ -114,8 +201,7 @@ function Index() {
         <div
           className="absolute inset-0 opacity-[0.08]"
           style={{
-            backgroundImage:
-              "linear-gradient(var(--color-brand) 1px, transparent 1px), linear-gradient(90deg, var(--color-brand) 1px, transparent 1px)",
+            backgroundImage: "linear-gradient(var(--color-brand) 1px, transparent 1px), linear-gradient(90deg, var(--color-brand) 1px, transparent 1px)",
             backgroundSize: "44px 44px",
           }}
           aria-hidden
@@ -134,29 +220,21 @@ function Index() {
               Keramika, gletanje, soboslikarstvo, struja i majstorske usluge — sve na jednom mjestu, za Zagreb i Slavoniju.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a
-                href="#kontakt"
-                className="group inline-flex items-center gap-2 rounded-md bg-brand px-6 py-3.5 text-sm font-bold text-brand-foreground shadow-lg shadow-black/20 transition hover:brightness-95"
-              >
+              <a href="#kontakt" className="group inline-flex items-center gap-2 rounded-md bg-brand px-6 py-3.5 text-sm font-bold text-brand-foreground shadow-lg shadow-black/20 transition hover:brightness-95">
                 Zatraži besplatnu ponudu
                 <ArrowUpRight size={18} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
-              <a
-                href="tel:+385913592825"
-                className="inline-flex items-center gap-2 rounded-md border border-white/15 px-5 py-3.5 text-sm font-semibold text-white hover:bg-white/5"
-              >
+              <a href="tel:+385913592825" className="inline-flex items-center gap-2 rounded-md border border-white/15 px-5 py-3.5 text-sm font-semibold text-white hover:bg-white/5">
                 <Phone size={16} /> 091 359 2825
               </a>
             </div>
           </div>
-
           <div className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-5">
-            {heroIcons.map(({ icon: Icon, label }) => (
-              <div
-                key={label}
-                className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 backdrop-blur"
-              >
-                <Icon className="text-brand shrink-0" size={20} strokeWidth={2.2} />
+            {heroIcons.map(({ icon: Icon, label, iconBg, iconColor }) => (
+              <div key={label} className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 backdrop-blur">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full" style={{ background: iconBg }}>
+                  <Icon size={16} style={{ color: iconColor }} strokeWidth={2.2} />
+                </div>
                 <span className="text-sm font-medium text-white/85">{label}</span>
               </div>
             ))}
@@ -169,43 +247,88 @@ function Index() {
         <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
           <div>
             <p className="text-sm font-semibold uppercase tracking-wider text-brand">Usluge</p>
-            <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-              Što radimo
-            </h2>
+            <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">Što radimo</h2>
           </div>
           <p className="max-w-md text-muted-foreground">
             Pet područja, jedan tim. Sve završne radove pokrivamo sami, bez podizvođača koji nestanu na pola posla.
           </p>
         </div>
-
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map(({ icon: Icon, title, desc }) => (
-            <article
-              key={title}
-              className="group relative overflow-hidden rounded-xl border border-border bg-card p-7 transition hover:border-brand hover:shadow-lg"
-            >
-              <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-brand-foreground">
-                <Icon size={24} strokeWidth={2.2} />
+          {services.map(({ icon: Icon, title, desc, iconBg, iconColor }) => (
+            <article key={title} className="group relative overflow-hidden rounded-xl border border-border bg-card p-7 transition hover:border-brand hover:shadow-lg">
+              <div
+                className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full transition"
+                style={{ background: iconBg }}
+              >
+                <Icon size={22} style={{ color: iconColor }} strokeWidth={2.2} />
               </div>
               <h3 className="font-display text-xl font-bold tracking-tight">{title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
             </article>
           ))}
         </div>
-
         <p className="mx-auto mt-10 max-w-3xl rounded-lg border border-dashed border-border bg-muted/40 p-5 text-center text-sm text-foreground sm:text-base">
           Radimo u timu, što znači brže izvođenje i manje stresa za vas — bez čekanja po nekoliko majstora redom.
         </p>
       </section>
 
+      {/* GALERIJA */}
+      <section id="galerija" className="bg-muted/40 py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-5">
+          <p className="text-sm font-semibold uppercase tracking-wider text-brand">Galerija</p>
+          <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">Naši radovi</h2>
+          <p className="mt-4 max-w-xl text-muted-foreground">Primjeri radova iz svih naših usluga — klikni na sliku za veći prikaz.</p>
+
+          {/* Tabs */}
+          <div className="mt-8 flex flex-wrap gap-2">
+            {services.map(({ title, iconBg, iconColor, icon: Icon }, idx) => (
+              <button
+                key={title}
+                onClick={() => setActiveTab(idx)}
+                className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  activeTab === idx
+                    ? "bg-foreground text-background shadow"
+                    : "border border-border bg-card text-muted-foreground hover:border-brand hover:text-foreground"
+                }`}
+              >
+                <div className="flex h-6 w-6 items-center justify-center rounded-full" style={{ background: iconBg }}>
+                  <Icon size={13} style={{ color: iconColor }} strokeWidth={2.5} />
+                </div>
+                {title}
+              </button>
+            ))}
+          </div>
+
+          {/* Grid */}
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-3">
+            {galleryImages.map((src, i) => (
+              <button
+                key={src}
+                onClick={() => setLightbox(src)}
+                className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-border bg-muted"
+              >
+                <img
+                  src={src}
+                  alt={`${activeService.title} ${i + 1}`}
+                  className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = "none";
+                  }}
+                />
+                <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/20" />
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* O NAMA */}
-      <section id="o-nama" className="bg-muted/40 py-20 md:py-28">
+      <section id="o-nama" className="py-20 md:py-28">
         <div className="mx-auto grid max-w-6xl gap-12 px-5 md:grid-cols-5 md:items-center">
           <div className="md:col-span-3">
             <p className="text-sm font-semibold uppercase tracking-wider text-brand">O nama</p>
-            <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-              Tim kojem možete vjerovati
-            </h2>
+            <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">Tim kojem možete vjerovati</h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
               BrickUp je tim majstora koji pokriva Zagreb i Slavoniju. Radimo i za privatne osobe koje renoviraju svoj dom, i za firme koje trebaju pouzdanog izvođača za veće projekte.
             </p>
@@ -214,7 +337,6 @@ function Index() {
               <span className="font-semibold text-foreground">dogovoreno, na vrijeme, uredno</span> — bez skrivenih troškova i bez priča.
             </p>
           </div>
-
           <div className="grid grid-cols-2 gap-3 md:col-span-2">
             {[
               { k: "2", l: "regije" },
@@ -232,34 +354,26 @@ function Index() {
       </section>
 
       {/* ZAŠTO */}
-      <section id="zasto" className="mx-auto max-w-6xl px-5 py-20 md:py-28">
-        <p className="text-sm font-semibold uppercase tracking-wider text-brand">Zašto BrickUp</p>
-        <h2 className="mt-2 max-w-2xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-          Zašto ljudi biraju nas
-        </h2>
-
-        <div className="mt-12 grid gap-4 sm:grid-cols-2">
-          {reasons.map(({ icon: Icon, title, desc }) => (
-            <div
-              key={title}
-              className="flex gap-5 rounded-xl border border-border bg-card p-6"
-            >
-              <div className="relative shrink-0">
-                <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-secondary text-brand">
-                  <Icon size={22} strokeWidth={2.2} />
+      <section id="zasto" className="bg-muted/40 py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-5">
+          <p className="text-sm font-semibold uppercase tracking-wider text-brand">Zašto BrickUp</p>
+          <h2 className="mt-2 max-w-2xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">Zašto ljudi biraju nas</h2>
+          <div className="mt-12 grid gap-4 sm:grid-cols-2">
+            {reasons.map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="flex gap-5 rounded-xl border border-border bg-card p-6">
+                <div className="relative shrink-0">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-secondary text-brand">
+                    <Icon size={22} strokeWidth={2.2} />
+                  </div>
+                  <CheckCircle2 size={16} className="absolute -bottom-1 -right-1 rounded-full bg-background text-brand" strokeWidth={2.5} />
                 </div>
-                <CheckCircle2
-                  size={16}
-                  className="absolute -bottom-1 -right-1 rounded-full bg-background text-brand"
-                  strokeWidth={2.5}
-                />
+                <div>
+                  <h3 className="font-display text-lg font-bold tracking-tight">{title}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{desc}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-display text-lg font-bold tracking-tight">{title}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{desc}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
@@ -268,18 +382,12 @@ function Index() {
         <div className="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <p className="text-sm font-semibold uppercase tracking-wider text-brand">Kontakt</p>
-            <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-              Zatražite ponudu danas
-            </h2>
+            <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">Zatražite ponudu danas</h2>
             <p className="mt-6 text-lg leading-relaxed text-white/75">
               Javite nam vrstu posla i lokaciju — javljamo se u najkraćem mogućem roku s konkretnom ponudom.
             </p>
-
             <div className="mt-8 space-y-3">
-              <a
-                href="tel:+385913592825"
-                className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4 transition hover:border-brand"
-              >
+              <a href="tel:+385913592825" className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4 transition hover:border-brand">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-brand text-brand-foreground">
                   <Phone size={18} />
                 </div>
@@ -288,10 +396,7 @@ function Index() {
                   <div className="font-semibold">091 359 2825</div>
                 </div>
               </a>
-              <a
-                href="mailto:luka.posavac091@gmail.com"
-                className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4 transition hover:border-brand"
-              >
+              <a href="mailto:luka.posavac091@gmail.com" className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4 transition hover:border-brand">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-brand text-brand-foreground">
                   <Mail size={18} />
                 </div>
@@ -303,10 +408,11 @@ function Index() {
             </div>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="rounded-2xl border border-white/10 bg-white p-6 text-foreground sm:p-8 lg:col-span-3"
-          >
+          <form onSubmit={handleSubmit} className="rounded-2xl border border-white/10 bg-white p-6 text-foreground sm:p-8 lg:col-span-3">
+            <div style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }} aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Ime i prezime" required>
                 <input name="ime" required className="form-input" placeholder="Ivan Horvat" />
@@ -350,6 +456,7 @@ function Index() {
               {submitting ? "Šaljem..." : "Pošalji upit"}
               <ArrowUpRight size={18} />
             </button>
+            {formError && <p className="mt-3 text-sm font-medium text-red-600">{formError}</p>}
           </form>
         </div>
       </section>
@@ -373,17 +480,9 @@ function Index() {
 }
 
 function Field({
-  label,
-  required,
-  hint,
-  className = "",
-  children,
+  label, required, hint, className = "", children,
 }: {
-  label: string;
-  required?: boolean;
-  hint?: string;
-  className?: string;
-  children: React.ReactNode;
+  label: string; required?: boolean; hint?: string; className?: string; children: React.ReactNode;
 }) {
   return (
     <label className={`block ${className}`}>

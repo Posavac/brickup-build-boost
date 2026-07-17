@@ -1,10 +1,17 @@
-<!-- LOVABLE:BEGIN -->
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-<!-- LOVABLE:END -->
+# BrickUp — agent notes
+
+This is a TanStack Start (React) site for a craftsman/handyman business
+serving Zagreb and Slavonia. See `README.md` for the file-based routing
+conventions used in `src/routes/`.
+
+Key pieces:
+
+- `src/routes/index.tsx` — the single-page marketing site and lead form.
+- `src/routes/api/contact.ts` — server route that validates and emails new
+  leads via Resend. Requires the `RESEND_API_KEY` environment variable
+  (see setup notes shared with this codebase).
+- `src/server.ts` / `src/start.ts` — SSR error-handling wrapper so a crashed
+  render returns a friendly HTML error page instead of a raw 500 response.
+
+Deployment target is Cloudflare Workers (`nitro` with the
+`cloudflare-module` preset, configured in `vite.config.ts`, build-only).

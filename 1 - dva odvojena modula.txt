@@ -1,0 +1,31 @@
+1 - dva odvojena modula 
+tenda
+1 knauf prekidac 
+1 uticnica knauf
+
+dnevna 
+
+3 normalne uticnice 
+1 knauf uticnica ili vidi dupla 
+
+prekidac obicni 
+
+kuhinja 
+8 uticnica,  
+1 knauf i jedan prekidac , 1 prekidac obicni 
+
+
+soba
+
+2 obicne, 2 knauf, 1 prekidac 
+ 
+
+hodnik 2 prekidaca 
+1 uticnica 
+
+kupatilo 
+
+2 +2 modulo 
+
+1 obicna uticnica 
+

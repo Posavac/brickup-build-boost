@@ -1,0 +1,445 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, type FormEvent } from "react";
+import {
+  ArrowUpRight,
+  Hammer,
+  PaintBucket,
+  Brush,
+  Zap,
+  Wrench,
+  CheckCircle2,
+  Phone,
+  Mail,
+  MapPin,
+  Users,
+  ClipboardCheck,
+  Building2,
+} from "lucide-react";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
+
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "BrickUp — Vaš dom, naš zanat. Majstori za Zagreb i Slavoniju" },
+      { name: "description", content: "Keramika, gletanje, soboslikarstvo, struja i kućni majstor — tim majstora za Zagreb i Slavoniju. Brže izvođenje, jasna ponuda, bez iznenađenja." },
+      { property: "og:title", content: "BrickUp — Vaš dom, naš zanat." },
+      { property: "og:description", content: "Tim majstora za završne radove. Zagreb i Slavonija." },
+    ],
+  }),
+  component: Index,
+});
+
+const services = [
+  { icon: Hammer, title: "Keramika", desc: "Postavljanje pločica, kupaonice, podovi, precizno i uredno, bez naknadnih iznenađenja." },
+  { icon: PaintBucket, title: "Gletanje i bojanje", desc: "Glatki zidovi i stropovi spremni za bilo koju boju ili tapetu." },
+  { icon: Brush, title: "Soboslikarstvo", desc: "Unutarnje i vanjsko bojanje, dekorativni premazi, brzo i čisto." },
+  { icon: Zap, title: "Električarski radovi", desc: "Instalacije, popravci, ugradnja rasvjete — sve po propisima i sigurno." },
+  { icon: Wrench, title: "Usluge kućnog majstora", desc: "Sitni popravci, montaže, sve ono za što nemate vremena ili alata." },
+];
+
+const heroIcons = [
+  { icon: Hammer, label: "Keramika" },
+  { icon: PaintBucket, label: "Gletanje" },
+  { icon: Brush, label: "Soboslikarstvo" },
+  { icon: Zap, label: "Struja" },
+  { icon: Wrench, label: "Kućni majstor" },
+];
+
+const reasons = [
+  { icon: Users, title: "Tim, ne pojedinac", desc: "Posao ide brže — više majstora, jedan dogovor." },
+  { icon: MapPin, title: "Pokrivamo dvije regije", desc: "Zagreb i cijela Slavonija — dolazimo brzo." },
+  { icon: Building2, title: "Stan ili poslovni prostor", desc: "Radimo sve — od kupaonice do većih projekata." },
+  { icon: ClipboardCheck, title: "Jasna ponuda unaprijed", desc: "Bez skrivenih troškova i iznenađenja na kraju." },
+];
+
+function Logo({ className = "" }: { className?: string }) {
+  return (
+    <div className={`inline-flex items-baseline gap-0.5 font-display font-extrabold tracking-tight ${className}`}>
+      <span>BrickU</span>
+      <span className="relative">
+        p
+        <ArrowUpRight
+          className="absolute -top-3 -right-3 text-brand"
+          strokeWidth={3}
+          size={16}
+        />
+      </span>
+    </div>
+  );
+}
+
+function Index() {
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFormError(null);
+    setSubmitting(true);
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const payload = {
+      ime: String(data.get("ime") ?? ""),
+      telefon: String(data.get("telefon") ?? ""),
+      email: String(data.get("email") ?? ""),
+      grad: String(data.get("grad") ?? ""),
+      vrsta: String(data.get("vrsta") ?? ""),
+      opis: String(data.get("opis") ?? ""),
+      // Honeypot — real visitors never see or fill this field.
+      website: String(data.get("website") ?? ""),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await res.json().catch(() => null);
+
+      if (!res.ok || !result?.ok) {
+        const message = result?.error || "Slanje nije uspjelo. Pokušajte ponovno ili nas nazovite.";
+        setFormError(message);
+        toast.error("Greška", { description: message });
+        return;
+      }
+
+      toast.success("Upit poslan", {
+        description: "Hvala! Javljamo se u najkraćem mogućem roku.",
+      });
+      form.reset();
+    } catch {
+      const message = "Nismo se mogli spojiti na server. Pokušajte ponovno ili nas nazovite telefonom.";
+      setFormError(message);
+      toast.error("Greška", { description: message });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background font-sans text-foreground">
+      <Toaster richColors position="top-center" />
+
+      {/* NAV */}
+      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
+          <a href="#top" className="text-xl text-foreground">
+            <Logo />
+          </a>
+          <nav className="hidden items-center gap-7 text-sm font-medium text-muted-foreground md:flex">
+            <a href="#usluge" className="hover:text-foreground">Usluge</a>
+            <a href="#o-nama" className="hover:text-foreground">O nama</a>
+            <a href="#zasto" className="hover:text-foreground">Zašto BrickUp</a>
+            <a href="#kontakt" className="hover:text-foreground">Kontakt</a>
+          </nav>
+          
+            href="#kontakt"
+            className="hidden rounded-md bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground transition hover:brightness-95 sm:inline-flex"
+          >
+            Besplatna ponuda
+          </a>
+        </div>
+      </header>
+
+      {/* HERO */}
+      <section id="top" className="relative overflow-hidden bg-secondary text-secondary-foreground">
+        <div
+          className="absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage:
+              "linear-gradient(var(--color-brand) 1px, transparent 1px), linear-gradient(90deg, var(--color-brand) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+          }}
+          aria-hidden
+        />
+        <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-brand/20 blur-3xl" aria-hidden />
+        <div className="relative mx-auto max-w-6xl px-5 pb-20 pt-20 md:pb-28 md:pt-28">
+          <div className="max-w-3xl">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/70">
+              <span className="h-1.5 w-1.5 rounded-full bg-brand" /> Zagreb &amp; Slavonija
+            </span>
+            <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+              BrickUp —<br />
+              <span className="text-brand">Vaš dom,</span> naš zanat.
+            </h1>
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">
+              Keramika, gletanje, soboslikarstvo, struja i majstorske usluge — sve na jednom mjestu, za Zagreb i Slavoniju.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              
+                href="#kontakt"
+                className="group inline-flex items-center gap-2 rounded-md bg-brand px-6 py-3.5 text-sm font-bold text-brand-foreground shadow-lg shadow-black/20 transition hover:brightness-95"
+              >
+                Zatraži besplatnu ponudu
+                <ArrowUpRight size={18} className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+              
+                href="tel:+385913592825"
+                className="inline-flex items-center gap-2 rounded-md border border-white/15 px-5 py-3.5 text-sm font-semibold text-white hover:bg-white/5"
+              >
+                <Phone size={16} /> 091 359 2825
+              </a>
+            </div>
+          </div>
+
+          <div className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-5">
+            {heroIcons.map(({ icon: Icon, label }) => (
+              <div
+                key={label}
+                className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 backdrop-blur"
+              >
+                <Icon className="text-brand shrink-0" size={20} strokeWidth={2.2} />
+                <span className="text-sm font-medium text-white/85">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* USLUGE */}
+      <section id="usluge" className="mx-auto max-w-6xl px-5 py-20 md:py-28">
+        <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wider text-brand">Usluge</p>
+            <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+              Što radimo
+            </h2>
+          </div>
+          <p className="max-w-md text-muted-foreground">
+            Pet područja, jedan tim. Sve završne radove pokrivamo sami, bez podizvođača koji nestanu na pola posla.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map(({ icon: Icon, title, desc }) => (
+            <article
+              key={title}
+              className="group relative overflow-hidden rounded-xl border border-border bg-card p-7 transition hover:border-brand hover:shadow-lg"
+            >
+              <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-brand-foreground">
+                <Icon size={24} strokeWidth={2.2} />
+              </div>
+              <h3 className="font-display text-xl font-bold tracking-tight">{title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
+            </article>
+          ))}
+        </div>
+
+        <p className="mx-auto mt-10 max-w-3xl rounded-lg border border-dashed border-border bg-muted/40 p-5 text-center text-sm text-foreground sm:text-base">
+          Radimo u timu, što znači brže izvođenje i manje stresa za vas — bez čekanja po nekoliko majstora redom.
+        </p>
+      </section>
+
+      {/* O NAMA */}
+      <section id="o-nama" className="bg-muted/40 py-20 md:py-28">
+        <div className="mx-auto grid max-w-6xl gap-12 px-5 md:grid-cols-5 md:items-center">
+          <div className="md:col-span-3">
+            <p className="text-sm font-semibold uppercase tracking-wider text-brand">O nama</p>
+            <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+              Tim kojem možete vjerovati
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              BrickUp je tim majstora koji pokriva Zagreb i Slavoniju. Radimo i za privatne osobe koje renoviraju svoj dom, i za firme koje trebaju pouzdanog izvođača za veće projekte.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+              Naš pristup je jednostavan:{" "}
+              <span className="font-semibold text-foreground">dogovoreno, na vrijeme, uredno</span> — bez skrivenih troškova i bez priča.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 md:col-span-2">
+            {[
+              { k: "2", l: "regije" },
+              { k: "5", l: "usluga" },
+              { k: "Tim", l: "ne pojedinac" },
+              { k: "24h", l: "odgovor na upit" },
+            ].map((s) => (
+              <div key={s.l} className="rounded-xl border border-border bg-card p-5">
+                <div className="font-display text-3xl font-extrabold text-brand sm:text-4xl">{s.k}</div>
+                <div className="mt-1 text-sm text-muted-foreground">{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ZAŠTO */}
+      <section id="zasto" className="mx-auto max-w-6xl px-5 py-20 md:py-28">
+        <p className="text-sm font-semibold uppercase tracking-wider text-brand">Zašto BrickUp</p>
+        <h2 className="mt-2 max-w-2xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+          Zašto ljudi biraju nas
+        </h2>
+
+        <div className="mt-12 grid gap-4 sm:grid-cols-2">
+          {reasons.map(({ icon: Icon, title, desc }) => (
+            <div
+              key={title}
+              className="flex gap-5 rounded-xl border border-border bg-card p-6"
+            >
+              <div className="relative shrink-0">
+                <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-secondary text-brand">
+                  <Icon size={22} strokeWidth={2.2} />
+                </div>
+                <CheckCircle2
+                  size={16}
+                  className="absolute -bottom-1 -right-1 rounded-full bg-background text-brand"
+                  strokeWidth={2.5}
+                />
+              </div>
+              <div>
+                <h3 className="font-display text-lg font-bold tracking-tight">{title}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* KONTAKT */}
+      <section id="kontakt" className="bg-secondary py-20 text-secondary-foreground md:py-28">
+        <div className="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-5">
+          <div className="lg:col-span-2">
+            <p className="text-sm font-semibold uppercase tracking-wider text-brand">Kontakt</p>
+            <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+              Zatražite ponudu danas
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-white/75">
+              Javite nam vrstu posla i lokaciju — javljamo se u najkraćem mogućem roku s konkretnom ponudom.
+            </p>
+
+            <div className="mt-8 space-y-3">
+              
+                href="tel:+385913592825"
+                className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4 transition hover:border-brand"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-brand text-brand-foreground">
+                  <Phone size={18} />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs uppercase tracking-wider text-white/50">Telefon</div>
+                  <div className="font-semibold">091 359 2825</div>
+                </div>
+              </a>
+              
+                href="mailto:luka.posavac091@gmail.com"
+                className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4 transition hover:border-brand"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-brand text-brand-foreground">
+                  <Mail size={18} />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs uppercase tracking-wider text-white/50">Email</div>
+                  <div className="truncate font-semibold">luka.posavac091@gmail.com</div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <form
+            onSubmit={handleSubmit}
+            className="rounded-2xl border border-white/10 bg-white p-6 text-foreground sm:p-8 lg:col-span-3"
+          >
+            {/* Honeypot — hidden from real visitors, bots tend to fill every field. */}
+            <div
+              style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
+              aria-hidden="true"
+            >
+              <label htmlFor="website">Website</label>
+              <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="Ime i prezime" required>
+                <input name="ime" required className="form-input" placeholder="Ivan Horvat" />
+              </Field>
+              <Field label="Telefon" required>
+                <input name="telefon" required type="tel" className="form-input" placeholder="091 234 5678" />
+              </Field>
+              <Field label="Email" hint="opcionalno">
+                <input name="email" type="email" className="form-input" placeholder="vas@email.com" />
+              </Field>
+              <Field label="Grad" required>
+                <select name="grad" required className="form-input">
+                  <option value="Zagreb">Zagreb</option>
+                  <option value="Osijek">Osijek</option>
+                  <option value="Slavonski Brod">Slavonski Brod</option>
+                  <option value="Vinkovci">Vinkovci</option>
+                  <option value="Vukovar">Vukovar</option>
+                  <option value="Đakovo">Đakovo</option>
+                  <option value="Ostalo (Slavonija)">Ostalo (Slavonija)</option>
+                </select>
+              </Field>
+              <Field label="Vrsta posla" required className="sm:col-span-2">
+                <select name="vrsta" required className="form-input">
+                  <option>Keramika</option>
+                  <option>Gletanje</option>
+                  <option>Soboslikarstvo</option>
+                  <option>Struja</option>
+                  <option>Kućni majstor</option>
+                  <option>Ostalo</option>
+                </select>
+              </Field>
+              <Field label="Opis posla" required className="sm:col-span-2">
+                <textarea name="opis" required rows={4} className="form-input resize-none" placeholder="Ukratko opišite što treba napraviti, kvadraturu i rok ako imate." />
+              </Field>
+            </div>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md bg-brand px-6 py-3.5 text-sm font-bold text-brand-foreground transition hover:brightness-95 disabled:opacity-60 sm:w-auto"
+            >
+              {submitting ? "Šaljem..." : "Pošalji upit"}
+              <ArrowUpRight size={18} />
+            </button>
+            {formError && (
+              <p className="mt-3 text-sm font-medium text-red-600">{formError}</p>
+            )}
+          </form>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t border-border bg-background">
+        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:grid-cols-3 sm:items-center">
+          <div>
+            <Logo className="text-lg" />
+            <p className="mt-2 text-sm text-muted-foreground">Zagreb &amp; Slavonija</p>
+          </div>
+          <div className="space-y-1 text-sm text-muted-foreground sm:text-center">
+            <div>Telefon: <a className="text-foreground hover:text-brand" href="tel:+385913592825">091 359 2825</a></div>
+            <div>Email: <a className="text-foreground hover:text-brand" href="mailto:luka.posavac091@gmail.com">luka.posavac091@gmail.com</a></div>
+          </div>
+          <p className="text-sm text-muted-foreground sm:text-right">© 2026 BrickUp. Sva prava pridržana.</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function Field({
+  label,
+  required,
+  hint,
+  className = "",
+  children,
+}: {
+  label: string;
+  required?: boolean;
+  hint?: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className={`block ${className}`}>
+      <span className="mb-1.5 flex items-center gap-2 text-sm font-medium text-foreground">
+        {label}
+        {required && <span className="text-brand">*</span>}
+        {hint && <span className="text-xs font-normal text-muted-foreground">({hint})</span>}
+      </span>
+      {children}
+    </label>
+  );
+}
