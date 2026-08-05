@@ -20,6 +20,15 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Tajne — .env sadrži RESEND_API_KEY i ne smije u repozitorij
+.env
+.env.*
+!.env.example
+
+# Originalne fotografije prije kompresije (bun run images ih premješta ovdje).
+# Teške su desetke megabajta i ne trebaju u repozitorij ni na server.
+original-images/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

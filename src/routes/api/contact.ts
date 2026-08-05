@@ -40,7 +40,14 @@ const leadSchema = z.object({
   opis: z.string().trim().min(5, "Opišite posao malo detaljnije.").max(2000),
   // Honeypot field: real users never see or fill this (it's visually
   // hidden in the form). If it arrives non-empty, the submission is spam.
-  website: z.string().max(0).optional().or(z.literal("")),
+  //
+  // Deliberately permissive: the schema must NOT reject a filled honeypot.
+  // It used to be `.max(0)`, which failed validation before the handler's
+  // silent-drop branch below could run — so bots got a 400 telling them
+  // exactly which field tripped them up, and any password manager that
+  // autofilled the hidden field locked a real customer out of the form
+  // with an untranslated English error. Accept the value here, decide below.
+  website: z.string().max(200).optional(),
 });
 
 function escapeHtml(value: string): string {
@@ -63,8 +70,10 @@ async function resolveEnvVar(name: string): Promise<string | undefined> {
   }
   try {
     const specifier = ["cloudflare", "workers"].join(":");
-    const cf: any = await import(/* @vite-ignore */ specifier);
-    return cf?.env?.[name];
+    const cf = (await import(/* @vite-ignore */ specifier)) as {
+      env?: Record<string, string | undefined>;
+    };
+    return cf.env?.[name];
   } catch {
     return undefined;
   }

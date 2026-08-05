@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, type UserConfig } from "vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -35,7 +35,9 @@ export default defineConfig(async ({ command }) => {
     plugins.push(nitro({ preset: "cloudflare-module" }));
   }
 
-  return {
+  // Eksplicitni tip: bez njega TypeScript "transformer" proširi u obični
+  // string, pa defineConfig ne prepozna nijedno preopterećenje (TS2769).
+  const config: UserConfig = {
     resolve: {
       alias: {
         "@": new URL("./src", import.meta.url).pathname,
@@ -53,9 +55,17 @@ export default defineConfig(async ({ command }) => {
     // consistent with the production CSS output.
     css: { transformer: "lightningcss" },
     optimizeDeps: {
-      include: ["react", "react-dom", "react-dom/client", "react/jsx-runtime", "react/jsx-dev-runtime"],
+      include: [
+        "react",
+        "react-dom",
+        "react-dom/client",
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
+      ],
     },
     server: { port: 3000 },
     plugins,
   };
+
+  return config;
 });
