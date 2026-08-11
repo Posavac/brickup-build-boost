@@ -152,6 +152,22 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Naslov sekcije ne smije završiti ispod ljepljivog zaglavlja kad se klikne
+     poveznica u navigaciji. Zaglavlje je visoko 4rem, plus malo zraka. */
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
 }
 
 @utility form-input {
@@ -163,7 +179,9 @@
   font-size: 0.9rem;
   color: var(--color-foreground);
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
   &:focus {
     border-color: var(--color-brand);
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-brand) 25%, transparent);
@@ -172,4 +190,3 @@
     color: var(--color-muted-foreground);
   }
 }
-

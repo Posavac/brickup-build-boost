@@ -8,7 +8,7 @@
  * Zagrebu ili Slavoniji.
  *
  * Sve vrijednosti dolaze iz src/lib/site.ts kako bi zapis i vidljivi tekst
- * uvijek govorili isto — nesklad između to dvoje Google tretira kao signal
+ * uvijek govorili isto, nesklad između to dvoje Google tretira kao signal
  * nepovjerenja.
  *
  * Provjera nakon objave: https://search.google.com/test/rich-results
@@ -54,7 +54,7 @@ const serviceNodes = services.map((service) => ({
   areaServed,
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: `${service.title} — pojedinačni radovi`,
+    name: `${service.title}, pojedinačni radovi`,
     itemListElement: service.items.map((item) => ({
       "@type": "Offer",
       itemOffered: { "@type": "Service", name: item },
@@ -71,7 +71,7 @@ export const homePageJsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      // Electrician i HousePainter su schema.org podvrste LocalBusinessa —
+      // Electrician i HousePainter su schema.org podvrste LocalBusinessa
       // konkretnija vrsta daje bolji rezultat za "električar Zagreb" nego
       // generički LocalBusiness.
       "@type": ["LocalBusiness", "Electrician", "HousePainter"],

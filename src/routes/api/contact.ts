@@ -7,16 +7,16 @@ import { z } from "zod";
 // Replaces the old `mailto:` trick on the homepage form. That approach
 // silently lost leads on any device without a configured mail client
 // (very common on mobile). This endpoint validates the submission and
-// sends it by email via Resend (https://resend.com) — no database needed
+// sends it by email via Resend (https://resend.com), no database needed
 // for now, the email itself is the record of the lead.
 //
 // Required environment variable:
-//   RESEND_API_KEY      — Resend API key (Settings → API Keys on resend.com)
+//   RESEND_API_KEY     , Resend API key (Settings → API Keys on resend.com)
 // Optional:
-//   LEAD_NOTIFY_EMAIL   — where leads are sent (defaults to the owner email below)
-//   LEAD_FROM_EMAIL     — "from" address (defaults to Resend's test sender,
+//   LEAD_NOTIFY_EMAIL  , where leads are sent (defaults to the owner email below)
+//   LEAD_FROM_EMAIL    , "from" address (defaults to Resend's test sender,
 //                          which only works when LEAD_NOTIFY_EMAIL is the
-//                          same address used to sign up for Resend — see
+//                          same address used to sign up for Resend, see
 //                          the setup notes shared alongside this file)
 // ---------------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ const leadSchema = z.object({
   //
   // Deliberately permissive: the schema must NOT reject a filled honeypot.
   // It used to be `.max(0)`, which failed validation before the handler's
-  // silent-drop branch below could run — so bots got a 400 telling them
+  // silent-drop branch below could run, so bots got a 400 telling them
   // exactly which field tripped them up, and any password manager that
   // autofilled the hidden field locked a real customer out of the form
   // with an untranslated English error. Accept the value here, decide below.
@@ -115,13 +115,13 @@ export const Route = createFileRoute("/api/contact")({
         const toEmail = (await resolveEnvVar("LEAD_NOTIFY_EMAIL")) || DEFAULT_NOTIFY_EMAIL;
         const fromEmail = (await resolveEnvVar("LEAD_FROM_EMAIL")) || DEFAULT_FROM_EMAIL;
 
-        const subject = `Novi upit — ${data.vrsta} (${data.grad})`;
+        const subject = `Novi upit: ${data.vrsta} (${data.grad})`;
         const html = `
           <h2 style="font-family:sans-serif">Novi upit s BrickUp stranice</h2>
           <table style="font-family:sans-serif;font-size:14px;border-collapse:collapse">
             <tr><td style="padding:4px 12px 4px 0"><strong>Ime i prezime</strong></td><td>${escapeHtml(data.ime)}</td></tr>
             <tr><td style="padding:4px 12px 4px 0"><strong>Telefon</strong></td><td>${escapeHtml(data.telefon)}</td></tr>
-            <tr><td style="padding:4px 12px 4px 0"><strong>Email</strong></td><td>${escapeHtml(data.email ?? "—")}</td></tr>
+            <tr><td style="padding:4px 12px 4px 0"><strong>Email</strong></td><td>${escapeHtml(data.email ?? "nije upisan")}</td></tr>
             <tr><td style="padding:4px 12px 4px 0"><strong>Grad</strong></td><td>${escapeHtml(data.grad)}</td></tr>
             <tr><td style="padding:4px 12px 4px 0"><strong>Vrsta posla</strong></td><td>${escapeHtml(data.vrsta)}</td></tr>
           </table>

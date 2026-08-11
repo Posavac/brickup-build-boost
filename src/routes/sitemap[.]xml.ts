@@ -5,7 +5,7 @@ import { absoluteUrl, seo, siteUrl } from "@/lib/site";
 // ---------------------------------------------------------------------------
 // GET /sitemap.xml
 //
-// Stranica je jednostranična, pa je sitemap kratak — ali ga Google Search
+// Stranica je jednostranična, pa je sitemap kratak, ali ga Google Search
 // Console traži i preko njega prati kada je sadržaj zadnji put mijenjan.
 // Slike su navedene kroz image-sitemap proširenje kako bi fotografije radova
 // mogle završiti u Google Slikama.
@@ -16,7 +16,7 @@ import { absoluteUrl, seo, siteUrl } from "@/lib/site";
 
 const lastmod = new Date().toISOString().slice(0, 10);
 
-const images = [{ loc: absoluteUrl(seo.ogImage), caption: "BrickUp — radovi na stanu" }];
+const images = [{ loc: absoluteUrl(seo.ogImage), caption: "BrickUp, radovi na stanu" }];
 
 const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"

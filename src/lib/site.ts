@@ -18,7 +18,7 @@
 //
 // Bez točne domene canonical oznaka, sitemap i strukturirani podaci pokazuju
 // na krivu adresu, pa Google može indeksirati pogrešan URL. Ovo je jedino
-// mjesto koje treba promijeniti — bez "https://" na kraju kose crte.
+// mjesto koje treba promijeniti, bez "https://" na kraju kose crte.
 //
 // Na Cloudflareu se može postaviti i preko varijable okoline SITE_URL.
 // ---------------------------------------------------------------------------
@@ -38,7 +38,15 @@ export const business = {
   phoneE164: "+385913592825",
   email: "luka.posavac091@gmail.com",
 
-  // ⚠️  Radno vrijeme namjerno nije popunjeno — nemoj izmišljati podatak koji
+  /**
+   * WhatsApp. Broj u međunarodnom formatu, bez plusa i bez razmaka.
+   * Za obrtnika je ovo najkorišteniji kanal jer kupac odmah može poslati
+   * fotografiju prostora, a iz fotografije se cijena procijeni puno brže.
+   */
+  whatsappNumber: "385913592825",
+  whatsappMessage: "Pozdrav, zainteresiran sam za ponudu. Molim kratki proračun.",
+
+  // ⚠️  Radno vrijeme namjerno nije popunjeno, nemoj izmišljati podatak koji
   // Google prikazuje korisnicima. Kad znaš točne sate, upiši ih ovdje i
   // pojavit će se i na stranici i u strukturiranim podacima:
   //   openingHours: [{ days: ["Mo","Tu","We","Th","Fr"], opens: "08:00", closes: "18:00" }]
@@ -52,7 +60,7 @@ export const seo = {
   ogImage: "/og-image.jpg",
 };
 
-/** Grupe gradova — koriste se i u tekstu i u `areaServed` za Google. */
+/** Grupe gradova, koriste se i u tekstu i u `areaServed` za Google. */
 export const serviceAreas = [
   {
     region: "Zagreb i okolica",
@@ -86,13 +94,13 @@ export type Service = {
   accusative: string;
   /** Kratki opis na kartici usluge. */
   short: string;
-  /** Duži opis — koristi se u strukturiranim podacima i u llms.txt. */
+  /** Duži opis, koristi se u strukturiranim podacima i u llms.txt. */
   long: string;
   /** Konkretni zahvati. Ovo je ono po čemu vas ljudi traže na Googleu. */
   items: string[];
   /** Mapa u public/images/ i prefiks imena datoteka. */
   folder: string;
-  /** Broj slika u mapi — ispisuje ga `bun run images`. */
+  /** Broj slika u mapi, ispisuje ga `bun run images`. */
   imageCount: number;
   accentBg: string;
   accentFg: string;
@@ -110,7 +118,7 @@ export const services: Service[] = [
       "Nove elektroinstalacije u stanovima, kućama i poslovnim prostorima",
       "Zamjena starih instalacija i dotrajalih razvodnih ormarića",
       "Ugradnja i zamjena osigurača, utičnica i prekidača",
-      "Montaža rasvjete — stropne, zidne, LED trake i vanjska rasvjeta",
+      "Montaža rasvjete: stropne, zidne, LED trake i vanjska rasvjeta",
       "Traženje i otklanjanje kvarova na instalaciji",
       "Priprema instalacije za kuhinju, klima-uređaj, bojler i perilicu",
     ],
@@ -124,7 +132,7 @@ export const services: Service[] = [
     title: "Gletanje",
     accusative: "gletanje",
     short:
-      "Gletanje zidova i stropova — glatka podloga spremna za boju, tapetu ili dekorativnu obradu.",
+      "Gletanje zidova i stropova, glatka podloga spremna za boju, tapetu ili dekorativnu obradu.",
     long: "Gletamo zidove i stropove u novogradnji i kod renovacija. Prije gletanja saniramo pukotine i oštećenja, bandažiramo spojeve gips-kartonskih ploča, a nakon brušenja podloga je spremna za bojanje ili tapetu.",
     items: [
       "Gletanje novih i starih zidova i stropova",
@@ -161,14 +169,15 @@ export const services: Service[] = [
     id: "kucni-majstor",
     title: "Kućni majstor",
     accusative: "poslove kućnog majstora",
-    short: "Sitni popravci i montaže koji se skupljaju mjesecima — riješeni u jednom dolasku.",
+    short: "Sitni popravci i montaže koji se skupljaju mjesecima, riješeni u jednom dolasku.",
     long: "Preuzimamo sitne poslove za koje nemate vremena, alata ili volje: montažu namještaja, postavljanje polica i zavjesa, zamjenu brava i kvaka te ostale kućne zahvate. Više sitnih stvari rješavamo u jednom dolasku.",
     items: [
       "Montaža namještaja, polica i ormara",
       "Postavljanje zavjesa, karniša, slika i zrcala",
       "Zamjena brava, kvaka i šarki",
       "Popravci vrata, prozora i roleta",
-      "Sitni zahvati po dogovoru — više stvari u jednom dolasku",
+      "Postava laminata i vinila te ugradnja letvica",
+      "Sitni zahvati po dogovoru, više stvari u jednom dolasku",
     ],
     folder: "majstor",
     imageCount: 3,
@@ -177,7 +186,7 @@ export const services: Service[] = [
   },
 ];
 
-/** Koraci suradnje — Google ih čita kao HowTo, ljudi kao "što me čeka". */
+/** Koraci suradnje, Google ih čita kao HowTo, ljudi kao "što me čeka". */
 export const processSteps = [
   {
     title: "Javite nam posao",
@@ -202,13 +211,13 @@ export const processSteps = [
  *
  * Ovo je najvrjedniji dio stranice za tražilice i AI modele: odgovori su
  * napisani tako da se mogu citirati u cijelosti, bez dodatnog konteksta.
- * Svi odgovori drže se onoga što je već obećano drugdje na stranici —
+ * Svi odgovori drže se onoga što je već obećano drugdje na stranici
  * ako promijeniš uvjete poslovanja, promijeni i ove odgovore.
  */
 export const faq = [
   {
     q: "Koja područja pokrivate?",
-    a: "Radimo na dva područja: Zagreb s okolicom (Sesvete, Velika Gorica, Samobor, Zaprešić, Dugo Selo) te cijelu Slavoniju — Osijek, Slavonski Brod, Vinkovci, Vukovar, Đakovo, Županju, Našice i Požegu s okolnim mjestima. Ako niste sigurni pokrivamo li vašu lokaciju, nazovite i odmah ćemo reći.",
+    a: "Radimo na dva područja: Zagreb s okolicom (Sesvete, Velika Gorica, Samobor, Zaprešić, Dugo Selo) te cijelu Slavoniju: Osijek, Slavonski Brod, Vinkovci, Vukovar, Đakovo, Županju, Našice i Požegu s okolnim mjestima. Ako niste sigurni pokrivamo li vašu lokaciju, nazovite i odmah ćemo reći.",
   },
   {
     q: "Koliko brzo se javljate na upit?",
@@ -224,7 +233,7 @@ export const faq = [
   },
   {
     q: "Možete li preuzeti cijelu adaptaciju stana?",
-    a: "Možemo. Kad se posao sastoji od više faza — elektroinstalacije, gletanje, bojanje i sitni radovi — sve pokrivamo mi, u jednom dogovoru i po jednom rasporedu. Ne prebacujemo dijelove posla na podizvođače koji nestanu na pola.",
+    a: "Možemo. Kad se posao sastoji od više faza, od elektroinstalacija i gletanja do bojanja i sitnih radova, sve pokrivamo mi, u jednom dogovoru i po jednom rasporedu. Ne prebacujemo dijelove posla na podizvođače koji nestanu na pola.",
   },
   {
     q: "Radite li i za tvrtke?",
@@ -235,13 +244,77 @@ export const faq = [
     a: "Po dogovoru. Materijal možemo nabaviti i uračunati u ponudu ili raditi s materijalom koji ste sami odabrali.",
   },
   {
+    q: "Dajete li jamstvo na radove?",
+    a: "Da. Na sve izvedene radove dajemo jamstvo od 12 mjeseci. Ako se u tom roku pojavi nedostatak zbog naše izvedbe, vraćamo se i popravljamo bez naplate.",
+  },
+  {
+    q: "Koliko košta bojanje stana i postava novog poda?",
+    a: "Za paket gletanje, bojanje i postava laminata ili vinila cijena kreće od oko 22 €/m² stambene površine, za rad bez materijala. Za stan od 60 m² to je okvirno 1.300 €. Točan iznos dobivate nakon pregleda prostora i nakon toga se ne mijenja.",
+  },
+  {
+    q: "Postavljate li laminat i vinil?",
+    a: "Da. Postavljamo laminat i vinil, izravnavamo podlogu prije postave i ugrađujemo letvice. Najčešće to radimo zajedno s gletanjem i bojanjem, u istom terminu, jer se prostor ionako mora isprazniti.",
+  },
+  {
     q: "Radite li i sitne poslove ili samo velike projekte?",
     a: "Radimo oboje. Jedna utičnica, montaža polica ili bojanje jedne sobe jednako su dobrodošli kao i kompletna adaptacija. Kod sitnih poslova više stvari rješavamo u istom dolasku kako se ne bi plaćao izlazak više puta.",
   },
 ];
 
+/**
+ * Jamstva.
+ *
+ * ⚠️  Ovo su obećanja kupcu, ne marketinški tekst. Objavi samo ono iza čega
+ * stvarno stojiš, posebno rok jamstva. Ako promijeniš rok, promijeni ga i u
+ * odgovoru "Dajete li jamstvo na radove?" niže u `faq`.
+ */
+export const guarantees = [
+  {
+    icon: "Receipt",
+    title: "Fiksna cijena",
+    desc: "Ono što dogovorimo prije početka, to i platite. Bez naknadnih doplata i bez naknadnog „iskrsnulo je nešto”.",
+  },
+  {
+    icon: "ShieldCheck",
+    title: "Jamstvo 12 mjeseci",
+    desc: "Na sve izvedene radove. Ako se u tom roku nešto pojavi zbog naše izvedbe, vraćamo se i popravljamo bez naplate.",
+  },
+  {
+    icon: "Sparkles",
+    title: "Čistimo za sobom",
+    desc: "Prostor i namještaj zaštitimo prije početka, a na kraju očistimo i predajemo prostor spreman za korištenje.",
+  },
+];
+
+/**
+ * Paket soboslikarstvo i podovi.
+ *
+ * Bojanje i postava poda idu prirodno zajedno: pod se ionako mora zaštititi
+ * ili zamijeniti kad se boji, pa kupac na jednom terminu dobije oboje umjesto
+ * da dva puta prazni stan i dva puta čisti za majstorima.
+ *
+ * ⚠️  Cijena je PRIJEDLOG. Uskladi je sa svojim stvarnim cijenama prije objave
+ * i pazi da odgovara iznosima u `faq`.
+ */
+export const flooringPackage = {
+  title: "Soboslikarstvo i novi podovi u jednom terminu",
+  lead: "Gletanje, bojanje i postava laminata ili vinila, jedan tim i jedan dogovor. Ne morate dva puta prazniti stan ni dva puta čistiti za majstorima.",
+  steps: [
+    "Zaštita prostora, namještaja i stolarije",
+    "Gletanje, brušenje i priprema zidova",
+    "Bojanje zidova i stropova u boji po vašem izboru",
+    "Izravnavanje podloge i postava laminata ili vinila",
+    "Ugradnja letvica, čišćenje i predaja prostora",
+  ],
+  duration: "4 do 7 dana",
+  priceFrom: "22 €/m²",
+  priceNote:
+    "za stan do 60 m², rad bez materijala, ovisno o stanju zidova i vrsti poda koji odaberete",
+};
+
 export const navLinks = [
   { href: "#usluge", label: "Usluge" },
+  { href: "#podovi", label: "Bojanje i podovi" },
   { href: "#kako-radimo", label: "Kako radimo" },
   { href: "#galerija", label: "Galerija" },
   { href: "#podrucja", label: "Područja" },

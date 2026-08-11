@@ -79,7 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "author", content: business.name },
-      // max-image-preview:large dopušta Googleu veliku sliku uz rezultat —
+      // max-image-preview:large dopušta Googleu veliku sliku uz rezultat
       // bez toga se fotografije radova ne prikazuju u pretraživanju.
       {
         name: "robots",

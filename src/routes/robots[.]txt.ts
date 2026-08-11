@@ -10,15 +10,15 @@ import { absoluteUrl } from "@/lib/site";
 //
 // Roboti AI modela navedeni su poimence i izričito dopušteni. Sve više
 // odgovora ljudi dobivaju kroz ChatGPT, Claude, Perplexity i Google AI
-// pregled umjesto kroz klasičnu listu rezultata — ako te robote blokiraš,
+// pregled umjesto kroz klasičnu listu rezultata, ako te robote blokiraš,
 // tvoja tvrtka u tim odgovorima jednostavno ne postoji.
 // ---------------------------------------------------------------------------
 
 const AI_CRAWLERS = [
-  "GPTBot", // OpenAI — ChatGPT
-  "OAI-SearchBot", // OpenAI — pretraživanje unutar ChatGPT-a
-  "ChatGPT-User", // OpenAI — dohvat stranice na zahtjev korisnika
-  "ClaudeBot", // Anthropic — Claude
+  "GPTBot", // OpenAI, ChatGPT
+  "OAI-SearchBot", // OpenAI, pretraživanje unutar ChatGPT-a
+  "ChatGPT-User", // OpenAI, dohvat stranice na zahtjev korisnika
+  "ClaudeBot", // Anthropic, Claude
   "Claude-User",
   "PerplexityBot", // Perplexity
   "Perplexity-User",
@@ -30,12 +30,12 @@ const AI_CRAWLERS = [
 ];
 
 const body = [
-  "# robots.txt — BrickUp",
+  "# robots.txt, BrickUp",
   "",
   "User-agent: *",
   "Allow: /",
   "",
-  "# Roboti AI asistenata i tražilica — izričito dopušteni",
+  "# Roboti AI asistenata i tražilica, izričito dopušteni",
   ...AI_CRAWLERS.flatMap((bot) => [`User-agent: ${bot}`, "Allow: /", ""]),
   `Sitemap: ${absoluteUrl("/sitemap.xml")}`,
   "",
