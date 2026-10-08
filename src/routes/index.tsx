@@ -17,7 +17,7 @@ import {
   ShieldCheck,
   Receipt,
   Sparkles,
-  FileCheck2,
+  Image as ImageIcon,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -158,22 +158,12 @@ function Logo({ className = "" }: { className?: string }) {
   );
 }
 
-function TrustFact({
-  icon: Icon,
-  label,
-  detail,
-}: {
-  icon: LucideIcon;
-  label: string;
-  detail: string;
-}) {
+/** Jedna činjenica u "dokaznoj" ploči heroja: broj/riječ + objašnjenje. */
+function HeroFact({ k, v }: { k: string; v: string }) {
   return (
-    <div className="flex items-start gap-3">
-      <Icon size={18} className="mt-0.5 shrink-0 text-brand" strokeWidth={2.2} aria-hidden />
-      <div className="min-w-0">
-        <p className="text-sm font-semibold text-foreground">{label}</p>
-        <p className="truncate text-xs text-muted-foreground">{detail}</p>
-      </div>
+    <div className="bg-secondary px-5 py-5">
+      <p className="truncate font-display text-lg font-extrabold text-white sm:text-xl">{k}</p>
+      <p className="mt-0.5 text-xs text-white/55">{v}</p>
     </div>
   );
 }
@@ -307,36 +297,27 @@ function Index() {
       </header>
 
       <main>
-        {/* HERO */}
+        {/* HERO: asimetričan raspored, tekst lijevo, dokaz povjerenja desno.
+            Namjerno bez generičke "SaaS" pozadine (mreža linija + zamagljena
+            mrlja) i bez lažne fotografije, dok ne dobijemo stvarne slike s
+            gradilišta: brojke i podaci koje stvarno možemo potkrijepiti su
+            desni "vizual" heroja, ne stock fotografija. */}
         <section
           id="top"
           className="relative overflow-hidden bg-secondary text-secondary-foreground"
         >
-          <div
-            className="absolute inset-0 opacity-[0.08]"
-            style={{
-              backgroundImage:
-                "linear-gradient(var(--color-brand) 1px, transparent 1px), linear-gradient(90deg, var(--color-brand) 1px, transparent 1px)",
-              backgroundSize: "44px 44px",
-            }}
-            aria-hidden
-          />
-          <div
-            className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-brand/20 blur-3xl"
-            aria-hidden
-          />
-          <div className="relative mx-auto max-w-6xl px-5 pt-20 pb-20 md:pt-24 md:pb-24">
-            <div className="max-w-3xl">
+          <div className="relative mx-auto grid max-w-6xl gap-10 px-5 pt-16 pb-16 md:pt-24 md:pb-24 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:gap-16">
+            <div>
               <p className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium tracking-wider text-white/70 uppercase">
                 Zagreb i Slavonija
               </p>
               {/* Jedan H1 na stranici, s glavnim pojmom i lokacijom, to je
                   najjači signal tražilici o čemu je stranica. */}
-              <h1 className="mt-5 font-display text-4xl leading-[1.05] font-extrabold tracking-tight sm:text-5xl md:text-6xl">
+              <h1 className="mt-5 font-display text-4xl leading-[1.05] font-extrabold tracking-tight text-balance sm:text-5xl md:text-6xl">
                 Električarski radovi i završni obrti{" "}
                 <span className="text-brand">za Zagreb i Slavoniju</span>
               </h1>
-              <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-white/75 sm:text-lg">
                 <strong className="font-display font-bold text-white/95">{business.tagline}</strong>{" "}
                 Kompletne elektroinstalacije, gletanje, soboslikarstvo i kućni majstor, sve od
                 jednog tima. Besplatna ponuda, odgovor unutar 24 sata.
@@ -364,29 +345,25 @@ function Index() {
                 Najbrže do cijene: fotografija prostora na WhatsApp, procjena najčešće isti dan.
               </p>
             </div>
-          </div>
-        </section>
 
-        {/* TRAKA POVJERENJA: tko stoji iza posla, prije nego korisnik uopće
-            dođe do detalja usluga. Razlog: kod majstora je prvi strah "tko
-            su ovi ljudi i mogu li im vjerovati u dom", pa to pitanje
-            odgovaramo odmah, ne na kraju stranice. */}
-        <section className="border-b border-border bg-muted/40">
-          <div className="mx-auto max-w-6xl px-5 py-6">
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              <TrustFact
-                icon={FileCheck2}
-                label="Registrirana tvrtka"
-                detail={hasCompany ? `${company.legalName} · OIB ${company.oib}` : business.name}
+            {/* Dokaz umjesto dekoracije: stvarni podaci (tvrtka, OIB, jamstvo)
+                umjesto ilustracije koju nitko nije tražio. */}
+            <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 text-sm">
+              <HeroFact
+                k={hasCompany ? company.legalName : business.name}
+                v="registrirana tvrtka"
               />
-              <TrustFact
-                icon={ShieldCheck}
-                label="Jamstvo 2 godine"
-                detail="na sve izvedene radove"
-              />
-              <TrustFact icon={Receipt} label="Fiksna cijena" detail="dogovoreno prije početka" />
-              <TrustFact icon={Users} label="Tim, ne pojedinac" detail="Zagreb i Slavonija" />
-            </div>
+              <HeroFact k="2 godine" v="jamstvo na radove" />
+              <HeroFact k="Fiksno" v="cijena prije početka" />
+              <HeroFact k="Tim" v="ne pojedinac" />
+              {hasCompany && (
+                <div className="col-span-2 bg-secondary px-5 py-4">
+                  <p className="text-xs leading-relaxed text-white/50">
+                    OIB {company.oib} · odgovara direktor {company.director}
+                  </p>
+                </div>
+              )}
+            </dl>
           </div>
         </section>
 
@@ -394,9 +371,8 @@ function Index() {
         <section id="usluge" className="mx-auto max-w-6xl px-5 py-20 md:py-28">
           <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
             <div>
-              <p className="text-sm font-semibold tracking-wider text-brand uppercase">Usluge</p>
-              <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-                Što radimo
+              <h2 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
+                Što <span className="text-brand">radimo</span>
               </h2>
             </div>
             <p className="max-w-md text-muted-foreground">
@@ -405,28 +381,35 @@ function Index() {
             </p>
           </div>
 
-          <Reveal className="mt-12 grid gap-4 sm:grid-cols-2">
+          {/* Namjerno bez kartica: četiri usluge, svaka kao red odvojen
+              linijom, ne kao četiri identične "pločice" kakve ima svaka
+              predložak stranica. */}
+          <Reveal className="mt-12 divide-y divide-border border-t border-border">
             {services.map((service) => {
               const Icon = serviceIcons[service.id];
               return (
                 <article
                   key={service.id}
                   id={`usluga-${service.id}`}
-                  className="group relative overflow-hidden rounded-xl border border-border bg-card p-7 transition hover:border-brand hover:shadow-lg"
+                  className="grid gap-6 py-10 first:pt-0 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] sm:gap-12"
                 >
-                  <div
-                    className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full transition"
-                    style={{ background: service.accentBg }}
-                  >
-                    <Icon size={22} style={{ color: service.accentFg }} strokeWidth={2.2} />
+                  <div>
+                    <div
+                      className="inline-flex h-11 w-11 items-center justify-center rounded-lg"
+                      style={{ background: service.accentBg }}
+                    >
+                      <Icon size={20} style={{ color: service.accentFg }} strokeWidth={2.2} />
+                    </div>
+                    <h3 className="mt-4 font-display text-2xl font-bold tracking-tight">
+                      {service.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {service.short}
+                    </p>
                   </div>
-                  <h3 className="font-display text-xl font-bold tracking-tight">{service.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {service.short}
-                  </p>
                   {/* Konkretni zahvati, a ne općeniti opis: po ovim pojmovima
                       ljudi zapravo pretražuju ("zamjena osigurača", "bandažiranje"). */}
-                  <ul className="mt-5 space-y-2">
+                  <ul className="grid content-start gap-2 sm:grid-cols-2">
                     {service.items.map((item) => (
                       <li
                         key={item}
@@ -458,10 +441,7 @@ function Index() {
         <section id="podovi" className="bg-secondary py-20 text-secondary-foreground md:py-28">
           <Reveal className="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-2 lg:items-center">
             <div>
-              <p className="text-sm font-semibold tracking-wider text-brand uppercase">
-                Paket usluga
-              </p>
-              <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight text-balance sm:text-4xl md:text-5xl">
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-balance sm:text-4xl md:text-5xl">
                 {flooringPackage.title}
               </h2>
               <p className="mt-6 text-lg leading-relaxed text-white/75">{flooringPackage.lead}</p>
@@ -516,24 +496,29 @@ function Index() {
           </Reveal>
         </section>
 
-        {/* KAKO RADIMO */}
+        {/* KAKO RADIMO: naslov je manji i funkcionira kao natpis iznad
+            slijeda koraka, ne kao još jedan veliki H2 identičan ostalima.
+            Koraci su povezani linijom (put), ne četiri odvojene kartice. */}
         <section id="kako-radimo" className="bg-muted/40 py-20 md:py-28">
           <div className="mx-auto max-w-6xl px-5">
-            <p className="text-sm font-semibold tracking-wider text-brand uppercase">Kako radimo</p>
-            <h2 className="mt-2 max-w-2xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+            <h2 className="max-w-2xl font-display text-xl font-bold tracking-tight text-muted-foreground sm:text-2xl">
               Od upita do gotovog posla u četiri koraka
             </h2>
             <ol
               ref={processListRef}
               data-reveal
-              className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+              className="relative mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
             >
+              <div
+                className="absolute top-5 right-0 left-0 hidden h-px bg-border lg:block"
+                aria-hidden
+              />
               {processSteps.map((step, index) => (
-                <li key={step.title} className="rounded-xl border border-border bg-card p-6">
-                  <span className="font-display text-3xl font-extrabold text-brand">
-                    {String(index + 1).padStart(2, "0")}
+                <li key={step.title} className="relative">
+                  <span className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-brand font-display text-sm font-extrabold text-brand-foreground">
+                    {index + 1}
                   </span>
-                  <h3 className="mt-3 font-display text-lg font-bold tracking-tight">
+                  <h3 className="mt-4 font-display text-lg font-bold tracking-tight">
                     {step.title}
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.desc}</p>
@@ -546,8 +531,7 @@ function Index() {
         {/* GALERIJA */}
         <section id="galerija" className="py-20 md:py-28">
           <div className="mx-auto max-w-6xl px-5">
-            <p className="text-sm font-semibold tracking-wider text-brand uppercase">Galerija</p>
-            <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+            <h2 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
               Naši radovi
             </h2>
             <p className="mt-4 max-w-xl text-muted-foreground">
@@ -583,61 +567,53 @@ function Index() {
               })}
             </div>
 
+            {/* NAPOMENA ZA VLASNIKA: dok stvarne fotografije izvedenih
+                radova ne budu dodane u public/images/, ovdje namjerno stoji
+                iskreno "mjesto za fotografiju" umjesto generičkih stock
+                slika prikazanih kao stvarni posao. Čim se doda prava
+                fotografija (vidi README u scripts/optimize-images.mjs),
+                zamijenite ovaj blok natrag na <img>. */}
             <div id="galerija-mreza" className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {galleryImages.map((image, i) => (
-                <button
+                <div
                   key={image.full}
-                  type="button"
-                  onClick={() => setLightbox({ src: image.full, alt: image.alt })}
-                  className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-border bg-muted"
-                  aria-label={`Otvori sliku: ${activeService.title} ${i + 1}`}
+                  title="Fotografija ovog posla još nije dodana"
+                  className="flex aspect-[4/3] flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-muted/50 px-3 text-center"
                 >
-                  <img
-                    src={image.thumb}
-                    alt={image.alt}
-                    width={800}
-                    height={600}
-                    className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                    loading={i < 3 ? "eager" : "lazy"}
-                    decoding="async"
+                  <ImageIcon
+                    size={22}
+                    className="text-muted-foreground"
+                    strokeWidth={1.75}
+                    aria-hidden
                   />
-                  <span className="absolute inset-0 bg-black/0 transition group-hover:bg-black/20" />
-                </button>
+                  <span className="text-xs text-muted-foreground">Fotografija stiže {i + 1}</span>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* PODRUČJA */}
+        {/* PODRUČJA: dvije regije odvojene vertikalnom linijom umjesto dvije
+            zasebne "kartice", tekst nosi sadržaj, ne okvir oko njega. */}
         <section id="podrucja" className="bg-muted/40 py-20 md:py-28">
           <div className="mx-auto max-w-6xl px-5">
-            <p className="text-sm font-semibold tracking-wider text-brand uppercase">
-              Područja rada
-            </p>
-            <h2 className="mt-2 max-w-2xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+            <h2 className="max-w-2xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
               Gdje sve dolazimo
             </h2>
             <p className="mt-4 max-w-2xl text-muted-foreground">
               Pokrivamo dvije regije. Ako vaše mjesto nije na popisu, a u blizini je nekog od
               navedenih gradova, svejedno nazovite jer najvjerojatnije dolazimo.
             </p>
-            <Reveal className="mt-10 grid gap-4 md:grid-cols-2">
-              {serviceAreas.map((area) => (
-                <div key={area.region} className="rounded-xl border border-border bg-card p-6">
+            <Reveal className="mt-10 grid gap-10 divide-y divide-border md:grid-cols-2 md:gap-0 md:divide-x md:divide-y-0">
+              {serviceAreas.map((area, i) => (
+                <div key={area.region} className={i === 0 ? "md:pr-10" : "pt-10 md:pt-0 md:pl-10"}>
                   <h3 className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
                     <MapPin size={18} className="text-brand" strokeWidth={2.4} aria-hidden />
                     {area.region}
                   </h3>
-                  <ul className="mt-4 flex flex-wrap gap-2">
-                    {area.cities.map((city) => (
-                      <li
-                        key={city}
-                        className="rounded-full border border-border bg-muted/60 px-3 py-1 text-sm text-foreground"
-                      >
-                        {city}
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="mt-3 leading-relaxed text-muted-foreground">
+                    {area.cities.join(", ")} i okolna mjesta.
+                  </p>
                 </div>
               ))}
             </Reveal>
@@ -713,28 +689,32 @@ function Index() {
           </Reveal>
         </section>
 
-        {/* JAMSTVA */}
+        {/* JAMSTVA: traka s okomitim linijama umjesto tri identične kartice,
+            da se izbjegne isti obrazac kao u ostatku stranice. */}
         <section id="jamstva" className="border-y border-border bg-muted/40 py-16 md:py-20">
           <div className="mx-auto max-w-6xl px-5">
-            <p className="text-sm font-semibold tracking-wider text-brand uppercase">
-              Naša jamstva
-            </p>
-            <h2 className="mt-2 max-w-2xl font-display text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
+            <h2 className="max-w-2xl font-display text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
               Tri stvari na koje se možete osloniti
             </h2>
 
-            <Reveal className="mt-10 grid gap-4 md:grid-cols-3">
-              {guarantees.map((g) => {
+            <Reveal className="mt-10 grid gap-8 divide-y divide-border md:grid-cols-3 md:gap-0 md:divide-x md:divide-y-0">
+              {guarantees.map((g, i) => {
                 const Icon = guaranteeIcons[g.icon] ?? ShieldCheck;
                 return (
-                  <div key={g.title} className="rounded-xl border border-border bg-card p-6">
-                    <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-brand text-brand-foreground">
-                      <Icon size={21} strokeWidth={2.2} aria-hidden />
+                  <div
+                    key={g.title}
+                    className={`flex gap-4 pt-8 md:pt-0 ${i === 0 ? "" : "md:pl-8"} ${i === guarantees.length - 1 ? "" : "md:pr-8"}`}
+                  >
+                    <Icon
+                      size={24}
+                      className="mt-0.5 shrink-0 text-brand"
+                      strokeWidth={2}
+                      aria-hidden
+                    />
+                    <div>
+                      <h3 className="font-display text-lg font-bold tracking-tight">{g.title}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{g.desc}</p>
                     </div>
-                    <h3 className="mt-5 font-display text-lg font-bold tracking-tight">
-                      {g.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{g.desc}</p>
                   </div>
                 );
               })}
@@ -745,10 +725,7 @@ function Index() {
         {/* PITANJA */}
         <section id="pitanja" className="py-20 md:py-28">
           <div className="mx-auto max-w-3xl px-5">
-            <p className="text-sm font-semibold tracking-wider text-brand uppercase">
-              Česta pitanja
-            </p>
-            <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+            <h2 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
               Ono što nas najčešće pitaju
             </h2>
             {/* Native <details> namjerno umjesto JS akordeona: odgovori su u
