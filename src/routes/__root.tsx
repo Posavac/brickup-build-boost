@@ -110,6 +110,13 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="hr">
       <head>
         <HeadContent />
+        {/* Postavlja .js na <html> prije renderiranja, koriste ga stilovi za
+            "data-reveal" (styles.css): sadržaj je odmah vidljiv dok se
+            JavaScript ne izvrši, pa stranica ne ovisi o skripti da bi se
+            pročitala. */}
+        <script
+          dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
+        />
       </head>
       <body>
         {children}

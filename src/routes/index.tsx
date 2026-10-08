@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowUpRight,
@@ -17,10 +17,12 @@ import {
   ShieldCheck,
   Receipt,
   Sparkles,
+  FileCheck2,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { useReveal } from "@/hooks/use-reveal";
 import {
   absoluteUrl,
   allCities,
@@ -39,6 +41,18 @@ import {
 } from "@/lib/site";
 import { homePageJsonLd } from "@/lib/structured-data";
 import { track } from "@/lib/track";
+
+/** Blagi ulazak sadržaja u vidno polje. Jedan hook po bloku, ne po stavci,
+ * da pokret ostane smiren (ovo je stranica kojoj ljudi trebaju vjerovati,
+ * ne proizvod koji se razmeće animacijom). */
+function Reveal({ children, className = "" }: { children: ReactNode; className?: string }) {
+  const ref = useReveal<HTMLDivElement>();
+  return (
+    <div ref={ref} data-reveal className={className}>
+      {children}
+    </div>
+  );
+}
 
 /** Predpripremljen wa.me link, isti se koristi na svim mjestima na stranici. */
 const whatsappHref = `https://wa.me/${business.whatsappNumber}?text=${encodeURIComponent(
@@ -144,11 +158,37 @@ function Logo({ className = "" }: { className?: string }) {
   );
 }
 
+function TrustFact({
+  icon: Icon,
+  label,
+  detail,
+}: {
+  icon: LucideIcon;
+  label: string;
+  detail: string;
+}) {
+  return (
+    <div className="flex items-start gap-3">
+      <Icon size={18} className="mt-0.5 shrink-0 text-brand" strokeWidth={2.2} aria-hidden />
+      <div className="min-w-0">
+        <p className="text-sm font-semibold text-foreground">{label}</p>
+        <p className="truncate text-xs text-muted-foreground">{detail}</p>
+      </div>
+    </div>
+  );
+}
+
 function Index() {
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState(0);
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+
+  // Reveal na elementu koji nije običan <div> (lista koraka), da ostane
+  // <ol> umjesto da ga zamotamo u <Reveal>. Obrazac za kontakt namjerno
+  // nema reveal: fokusabilna polja ne smiju biti nevidljiva dok se ne
+  // pokrene animacija.
+  const processListRef = useReveal<HTMLOListElement>();
 
   // Escape zatvara galeriju, bez toga se na tipkovnici iz nje nije moglo izaći.
   useEffect(() => {
@@ -285,10 +325,10 @@ function Index() {
             className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-brand/20 blur-3xl"
             aria-hidden
           />
-          <div className="relative mx-auto max-w-6xl px-5 pt-20 pb-20 md:pt-28 md:pb-28">
+          <div className="relative mx-auto max-w-6xl px-5 pt-20 pb-20 md:pt-24 md:pb-24">
             <div className="max-w-3xl">
-              <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium tracking-wider text-white/70 uppercase">
-                <span className="h-1.5 w-1.5 rounded-full bg-brand" /> Zagreb &amp; Slavonija
+              <p className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium tracking-wider text-white/70 uppercase">
+                Zagreb i Slavonija
               </p>
               {/* Jedan H1 na stranici, s glavnim pojmom i lokacijom, to je
                   najjači signal tražilici o čemu je stranica. */}
@@ -296,13 +336,10 @@ function Index() {
                 Električarski radovi i završni obrti{" "}
                 <span className="text-brand">za Zagreb i Slavoniju</span>
               </h1>
-              <p className="mt-5 font-display text-xl font-bold tracking-tight text-white/90">
-                {business.tagline}
-              </p>
-              <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">
-                Kompletne elektroinstalacije, adaptacije, rasvjeta i zamjena osigurača, gletanje,
-                soboslikarstvo i usluge kućnog majstora, sve od jednog tima. Besplatna ponuda,
-                odgovor na upit unutar 24 sata.
+              <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">
+                <strong className="font-display font-bold text-white/95">{business.tagline}</strong>{" "}
+                Kompletne elektroinstalacije, gletanje, soboslikarstvo i kućni majstor, sve od
+                jednog tima. Besplatna ponuda, odgovor unutar 24 sata.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <a
@@ -323,30 +360,33 @@ function Index() {
                   <Phone size={16} /> {business.phoneDisplay}
                 </a>
               </div>
-              <p className="mt-6 text-sm leading-relaxed text-white/55">
-                Najbrže do cijene: pošaljite nam par fotografija prostora na WhatsApp. Iz
-                fotografije i kvadrature u pravilu možemo dati okvirnu cijenu još isti dan.
+              <p className="mt-5 max-w-xl text-xs leading-relaxed text-white/45">
+                Najbrže do cijene: fotografija prostora na WhatsApp, procjena najčešće isti dan.
               </p>
             </div>
-            <ul className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {services.map((service) => {
-                const Icon = serviceIcons[service.id];
-                return (
-                  <li
-                    key={service.id}
-                    className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 backdrop-blur"
-                  >
-                    <span
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
-                      style={{ background: service.accentBg }}
-                    >
-                      <Icon size={16} style={{ color: service.accentFg }} strokeWidth={2.2} />
-                    </span>
-                    <span className="text-sm font-medium text-white/85">{service.title}</span>
-                  </li>
-                );
-              })}
-            </ul>
+          </div>
+        </section>
+
+        {/* TRAKA POVJERENJA: tko stoji iza posla, prije nego korisnik uopće
+            dođe do detalja usluga. Razlog: kod majstora je prvi strah "tko
+            su ovi ljudi i mogu li im vjerovati u dom", pa to pitanje
+            odgovaramo odmah, ne na kraju stranice. */}
+        <section className="border-b border-border bg-muted/40">
+          <div className="mx-auto max-w-6xl px-5 py-6">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              <TrustFact
+                icon={FileCheck2}
+                label="Registrirana tvrtka"
+                detail={hasCompany ? `${company.legalName} · OIB ${company.oib}` : business.name}
+              />
+              <TrustFact
+                icon={ShieldCheck}
+                label="Jamstvo 2 godine"
+                detail="na sve izvedene radove"
+              />
+              <TrustFact icon={Receipt} label="Fiksna cijena" detail="dogovoreno prije početka" />
+              <TrustFact icon={Users} label="Tim, ne pojedinac" detail="Zagreb i Slavonija" />
+            </div>
           </div>
         </section>
 
@@ -365,7 +405,7 @@ function Index() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-4 sm:grid-cols-2">
+          <Reveal className="mt-12 grid gap-4 sm:grid-cols-2">
             {services.map((service) => {
               const Icon = serviceIcons[service.id];
               return (
@@ -405,7 +445,7 @@ function Index() {
                 </article>
               );
             })}
-          </div>
+          </Reveal>
 
           <p className="mx-auto mt-10 max-w-3xl rounded-lg border border-dashed border-border bg-muted/40 p-5 text-center text-sm text-foreground sm:text-base">
             Radimo u timu, što znači brže izvođenje i manje stresa za vas, bez čekanja na nekoliko
@@ -416,7 +456,7 @@ function Index() {
 
         {/* BOJANJE I PODOVI */}
         <section id="podovi" className="bg-secondary py-20 text-secondary-foreground md:py-28">
-          <div className="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-2 lg:items-center">
+          <Reveal className="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-2 lg:items-center">
             <div>
               <p className="text-sm font-semibold tracking-wider text-brand uppercase">
                 Paket usluga
@@ -473,7 +513,7 @@ function Index() {
                 ))}
               </ol>
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* KAKO RADIMO */}
@@ -483,7 +523,11 @@ function Index() {
             <h2 className="mt-2 max-w-2xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
               Od upita do gotovog posla u četiri koraka
             </h2>
-            <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <ol
+              ref={processListRef}
+              data-reveal
+              className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+            >
               {processSteps.map((step, index) => (
                 <li key={step.title} className="rounded-xl border border-border bg-card p-6">
                   <span className="font-display text-3xl font-extrabold text-brand">
@@ -577,7 +621,7 @@ function Index() {
               Pokrivamo dvije regije. Ako vaše mjesto nije na popisu, a u blizini je nekog od
               navedenih gradova, svejedno nazovite jer najvjerojatnije dolazimo.
             </p>
-            <div className="mt-10 grid gap-4 md:grid-cols-2">
+            <Reveal className="mt-10 grid gap-4 md:grid-cols-2">
               {serviceAreas.map((area) => (
                 <div key={area.region} className="rounded-xl border border-border bg-card p-6">
                   <h3 className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
@@ -596,13 +640,15 @@ function Index() {
                   </ul>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
-        {/* O NAMA */}
+        {/* O NAMA: tko smo, tko osobno odgovara za posao, i zašto nas ljudi
+            biraju, sve u jednoj priči umjesto razbacano u tri odvojene
+            sekcije istog izgleda (kartica za karticom). */}
         <section id="o-nama" className="py-20 md:py-28">
-          <div className="mx-auto grid max-w-6xl gap-12 px-5 md:grid-cols-5 md:items-center">
+          <Reveal className="mx-auto grid max-w-6xl gap-12 px-5 md:grid-cols-5 md:items-start">
             <div className="md:col-span-3">
               <p className="text-sm font-semibold tracking-wider text-brand uppercase">O nama</p>
               <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
@@ -621,6 +667,33 @@ function Index() {
                 , bez skrivenih troškova i bez priča. Prostor prije radova zaštitimo, a nakon
                 završetka očistimo za sobom.
               </p>
+              {hasCompany && (
+                <p className="mt-4 rounded-lg border border-dashed border-border bg-muted/40 p-4 text-sm leading-relaxed text-muted-foreground">
+                  Iza BrickUpa stoji registrirana tvrtka {company.legalName}
+                  {company.address && `, ${company.address}`}
+                  {company.oib && `, OIB ${company.oib}`}. Za svaki ugovoren posao i eventualan
+                  prigovor osobno odgovara direktor,{" "}
+                  <strong className="font-semibold text-foreground">{company.director}</strong>, ne
+                  anonimna firma.
+                </p>
+              )}
+
+              <ul className="mt-10 divide-y divide-border border-t border-border">
+                {reasons.map(({ icon: Icon, title, desc }) => (
+                  <li key={title} className="flex gap-4 py-5">
+                    <Icon
+                      size={20}
+                      className="mt-0.5 shrink-0 text-brand"
+                      strokeWidth={2.2}
+                      aria-hidden
+                    />
+                    <div>
+                      <h3 className="font-display text-base font-bold tracking-tight">{title}</h3>
+                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{desc}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
             <div className="grid grid-cols-2 gap-3 md:col-span-2">
               {[
@@ -637,40 +710,7 @@ function Index() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* ZAŠTO */}
-        <section id="zasto" className="bg-muted/40 py-20 md:py-28">
-          <div className="mx-auto max-w-6xl px-5">
-            <p className="text-sm font-semibold tracking-wider text-brand uppercase">
-              Zašto BrickUp
-            </p>
-            <h2 className="mt-2 max-w-2xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-              Zašto ljudi biraju nas
-            </h2>
-            <div className="mt-12 grid gap-4 sm:grid-cols-2">
-              {reasons.map(({ icon: Icon, title, desc }) => (
-                <div key={title} className="flex gap-5 rounded-xl border border-border bg-card p-6">
-                  <div className="relative shrink-0">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-secondary text-brand">
-                      <Icon size={22} strokeWidth={2.2} aria-hidden />
-                    </div>
-                    <CheckCircle2
-                      size={16}
-                      className="absolute -right-1 -bottom-1 rounded-full bg-background text-brand"
-                      strokeWidth={2.5}
-                      aria-hidden
-                    />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-lg font-bold tracking-tight">{title}</h3>
-                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* JAMSTVA */}
@@ -683,7 +723,7 @@ function Index() {
               Tri stvari na koje se možete osloniti
             </h2>
 
-            <div className="mt-10 grid gap-4 md:grid-cols-3">
+            <Reveal className="mt-10 grid gap-4 md:grid-cols-3">
               {guarantees.map((g) => {
                 const Icon = guaranteeIcons[g.icon] ?? ShieldCheck;
                 return (
@@ -698,7 +738,7 @@ function Index() {
                   </div>
                 );
               })}
-            </div>
+            </Reveal>
           </div>
         </section>
 
