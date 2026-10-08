@@ -53,6 +53,31 @@ export const business = {
   openingHours: [] as Array<{ days: string[]; opens: string; closes: string }>,
 };
 
+/**
+ * Pravna osoba koja stoji iza BrickUpa: sklapa ugovore, izdaje račune i
+ * odgovara klijentu za radove.
+ *
+ * ⚠️  POPUNI TOČNIM PODACIMA IZ SUDSKOG REGISTRA (sudreg.pravosudje.hr).
+ * Zakon o elektroničkoj trgovini traži da stranica koja nudi usluge navede
+ * puni naziv, sjedište, OIB i registar pružatelja usluge. Dok je `legalName`
+ * prazan, stranica ne prikazuje ništa od ovoga i u podnožju i pravilima
+ * privatnosti piše samo BrickUp.
+ */
+export const company = {
+  /** Puni naziv iz registra, npr. "Naziv d.o.o. za građevinske usluge" */
+  legalName: "",
+  /** Ulica, broj, poštanski broj i grad sjedišta */
+  address: "",
+  oib: "",
+  /** Npr. "Trgovački sud u Zagrebu, MBS 080000000" */
+  registry: "",
+};
+
+export const hasCompany = company.legalName.trim() !== "";
+
+/** Tko je voditelj obrade osobnih podataka iz obrasca. */
+export const dataController = hasCompany ? company.legalName : business.name;
+
 export const seo = {
   title: "Električar i majstori za Zagreb i Slavoniju | BrickUp",
   description:
@@ -233,7 +258,7 @@ export const faq = [
   },
   {
     q: "Možete li preuzeti cijelu adaptaciju stana?",
-    a: "Možemo. Kad se posao sastoji od više faza, od elektroinstalacija i gletanja do bojanja i sitnih radova, sve pokrivamo mi, u jednom dogovoru i po jednom rasporedu. Ne prebacujemo dijelove posla na podizvođače koji nestanu na pola.",
+    a: "Možemo. Kad se posao sastoji od više faza, od elektroinstalacija i gletanja do bojanja i sitnih radova, sve pokrivamo mi, u jednom dogovoru. Imate jednu osobu za kontakt i jedan raspored, a mi koordiniramo majstore za svaku fazu.",
   },
   {
     q: "Radite li i za tvrtke?",
