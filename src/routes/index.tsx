@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -25,7 +25,9 @@ import {
   absoluteUrl,
   allCities,
   business,
+  company,
   faq,
+  hasCompany,
   flooringPackage,
   guarantees,
   navLinks,
@@ -902,6 +904,13 @@ function Index() {
                 <ArrowUpRight size={18} aria-hidden />
               </button>
               {formError && <p className="mt-3 text-sm font-medium text-red-600">{formError}</p>}
+              <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+                Podatke iz obrasca koristimo samo za odgovor na vaš upit i izradu ponude. Više u{" "}
+                <Link to="/privatnost" className="underline hover:text-foreground">
+                  pravilima privatnosti
+                </Link>
+                .
+              </p>
             </form>
           </div>
         </section>
@@ -935,10 +944,27 @@ function Index() {
                 </a>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground sm:text-right">
-              © {new Date().getFullYear()} {business.name}. Sva prava pridržana.
-            </p>
+            <div className="space-y-1 text-sm text-muted-foreground sm:text-right">
+              <p>
+                © {new Date().getFullYear()} {business.name}. Sva prava pridržana.
+              </p>
+              <p>
+                <Link to="/privatnost" className="hover:text-foreground">
+                  Pravila privatnosti
+                </Link>
+              </p>
+            </div>
           </div>
+          {/* Podaci o pružatelju usluge, obvezni po Zakonu o elektroničkoj
+              trgovini. Prikazuju se tek kad se popuni `company` u site.ts. */}
+          {hasCompany && (
+            <p className="mt-8 border-t border-border pt-6 text-xs leading-relaxed text-muted-foreground">
+              Usluge pod nazivom {business.name} pruža {company.legalName}
+              {company.address && `, ${company.address}`}
+              {company.oib && `, OIB ${company.oib}`}
+              {company.registry && `, ${company.registry}`}.
+            </p>
+          )}
           {/* Popis usluga i gradova u podnožju: dodatni tekstualni signal
               tražilici o opsegu posla i pokrivenosti. */}
           <p className="mt-8 border-t border-border pt-6 text-xs leading-relaxed text-muted-foreground">

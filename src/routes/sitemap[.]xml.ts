@@ -35,6 +35,12 @@ ${images
   )
   .join("\n")}
   </url>
+  <url>
+    <loc>${absoluteUrl("/privatnost")}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
 </urlset>
 `;
 
