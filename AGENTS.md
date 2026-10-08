@@ -30,7 +30,7 @@ Key pieces:
   Update the matching `imageCount` in `src/lib/site.ts` afterwards.
 
 Copy is Croatian; keep the diacritics. Business claims on the page (24-hour
-response, free quote, no subcontractors) are mirrored in the FAQ and JSON-LD
+response, free quote, 2-year warranty) are mirrored in the FAQ and JSON-LD
 — if the terms change, change all three.
 
 Deployment target is Cloudflare Workers (`nitro` with the
