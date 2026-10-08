@@ -20,7 +20,7 @@ const body = `# ${business.name}
 > ${seo.description}
 
 ${business.name} je tim majstora koji izvodi električarske radove i završne obrte za privatne
-osobe i tvrtke na području Zagreba i Slavonije. Sve usluge izvodi isti tim, bez podizvođača.
+osobe i tvrtke na području Zagreba i Slavonije. Radove izvode provjereni registrirani majstori, a klijent ima jednu osobu za kontakt.
 
 ## Kontakt
 

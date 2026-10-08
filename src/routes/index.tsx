@@ -360,8 +360,8 @@ function Index() {
               </h2>
             </div>
             <p className="max-w-md text-muted-foreground">
-              Četiri područja, jedan tim. Sve radove pokrivamo sami, bez podizvođača koji nestanu na
-              pola posla.
+              Četiri područja, jedan dogovor. Provjerene majstore koordiniramo mi, a vi imate jednu
+              osobu za kontakt od ponude do predaje.
             </p>
           </div>
 
@@ -625,7 +625,7 @@ function Index() {
             <div className="grid grid-cols-2 gap-3 md:col-span-2">
               {[
                 { k: "24 h", l: "odgovor na upit" },
-                { k: "12 mj.", l: "jamstvo na radove" },
+                { k: "2 god.", l: "jamstvo na radove" },
                 { k: "2", l: "regije pokrivamo" },
                 { k: "Tim", l: "ne pojedinac" },
               ].map((stat) => (
@@ -952,6 +952,10 @@ function Index() {
                 <Link to="/privatnost" className="hover:text-foreground">
                   Pravila privatnosti
                 </Link>
+                {" · "}
+                <Link to="/pravne-informacije" className="hover:text-foreground">
+                  Podaci o tvrtki i prigovori
+                </Link>
               </p>
             </div>
           </div>
@@ -959,10 +963,11 @@ function Index() {
               trgovini. Prikazuju se tek kad se popuni `company` u site.ts. */}
           {hasCompany && (
             <p className="mt-8 border-t border-border pt-6 text-xs leading-relaxed text-muted-foreground">
-              Usluge pod nazivom {business.name} pruža {company.legalName}
+              {business.name} je usluga tvrtke {company.legalName}
               {company.address && `, ${company.address}`}
               {company.oib && `, OIB ${company.oib}`}
-              {company.registry && `, ${company.registry}`}.
+              {company.registry && `, ${company.registry}`}. Radove izvode registrirani obrtnici i
+              tvrtke s kojima surađujemo.
             </p>
           )}
           {/* Popis usluga i gradova u podnožju: dodatni tekstualni signal

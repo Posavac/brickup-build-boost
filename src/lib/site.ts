@@ -65,12 +65,16 @@ export const business = {
  */
 export const company = {
   /** Puni naziv iz registra, npr. "Naziv d.o.o. za građevinske usluge" */
-  legalName: "",
+  legalName: "Verdia j.d.o.o.",
   /** Ulica, broj, poštanski broj i grad sjedišta */
-  address: "",
-  oib: "",
+  address: "Ivana Gundulića 5, 31431 Čepin",
+  oib: "84729483121",
   /** Npr. "Trgovački sud u Zagrebu, MBS 080000000" */
-  registry: "",
+  // Sjedište je u Čepinu, pa je nadležan Trgovački sud u Osijeku. MBS dopiši
+  // kad ga provjeriš na sudreg.pravosudje.hr.
+  registry: "Trgovački sud u Osijeku",
+  /** Član uprave / direktor, navodi se na stranici s podacima o tvrtki. */
+  director: "Zvonimir Kišurek",
 };
 
 export const hasCompany = company.legalName.trim() !== "";
@@ -270,7 +274,7 @@ export const faq = [
   },
   {
     q: "Dajete li jamstvo na radove?",
-    a: "Da. Na sve izvedene radove dajemo jamstvo od 12 mjeseci. Ako se u tom roku pojavi nedostatak zbog naše izvedbe, vraćamo se i popravljamo bez naplate.",
+    a: "Da. Na sve izvedene radove odgovaramo 2 godine od predaje, kako propisuje Zakon o obveznim odnosima. Ako se u tom roku pojavi nedostatak zbog naše izvedbe, vraćamo se i popravljamo bez naplate.",
   },
   {
     q: "Koliko košta bojanje stana i postava novog poda?",
@@ -301,7 +305,7 @@ export const guarantees = [
   },
   {
     icon: "ShieldCheck",
-    title: "Jamstvo 12 mjeseci",
+    title: "Jamstvo 2 godine",
     desc: "Na sve izvedene radove. Ako se u tom roku nešto pojavi zbog naše izvedbe, vraćamo se i popravljamo bez naplate.",
   },
   {

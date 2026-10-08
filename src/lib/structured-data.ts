@@ -17,7 +17,9 @@
 import {
   absoluteUrl,
   business,
+  company,
   faq,
+  hasCompany,
   processSteps,
   seo,
   serviceAreas,
@@ -79,6 +81,10 @@ export const homePageJsonLd = {
       name: business.name,
       description: seo.description,
       slogan: business.tagline,
+      ...(hasCompany && {
+        legalName: company.legalName,
+        ...(company.oib && { taxID: company.oib }),
+      }),
       url: siteUrl,
       telephone: business.phoneE164,
       email: business.email,

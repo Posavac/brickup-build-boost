@@ -1,6 +1,16 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+/* Fontovi se poslužuju s naše domene, ne s Google Fonts: tako posjetiteljeva
+   IP adresa ne odlazi Googleu i stranica ne treba privolu za kolačiće. */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/montserrat/600.css";
+@import "@fontsource/montserrat/700.css";
+@import "@fontsource/montserrat/800.css";
+@import "@fontsource/montserrat/900.css";
 
 @custom-variant dark (&:is(.dark *));
 

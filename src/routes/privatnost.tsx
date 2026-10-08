@@ -115,7 +115,12 @@ function Privacy() {
 
           <section>
             <h2>Kolačići</h2>
-            <p>Stranica ne koristi kolačiće za praćenje ni oglašavanje.</p>
+            <p>
+              Stranica ne postavlja kolačiće i ne koristi alate za praćenje ni oglašavanje. Fontovi
+              i slike poslužuju se s naše domene, pa se pri posjetu ne šalju podaci trećim stranama.
+              Ako kliknete na WhatsApp, otvara se aplikacija tvrtke Meta i na nju se primjenjuju
+              njihova pravila privatnosti.
+            </p>
           </section>
         </div>
       </main>
