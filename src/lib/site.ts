@@ -83,9 +83,9 @@ export const hasCompany = company.legalName.trim() !== "";
 export const dataController = hasCompany ? company.legalName : business.name;
 
 export const seo = {
-  title: "Električar i majstori za Zagreb i Slavoniju | BrickUp",
+  title: "Električar i majstori za adaptaciju | BrickUp",
   description:
-    "Električarski radovi, elektroinstalacije, gletanje, soboslikarstvo i kućni majstor za Zagreb i Slavoniju. Besplatna ponuda, odgovor u 24 sata. Nazovite 091 359 2825.",
+    "Električarski radovi, elektroinstalacije, gletanje, soboslikarstvo i kućni majstor. Besplatna ponuda, odgovor u 24 sata. Nazovite 091 359 2825.",
   ogImage: "/og-image.jpg",
 };
 
@@ -142,7 +142,7 @@ export const services: Service[] = [
     accusative: "električarske radove",
     short:
       "Kompletne elektroinstalacije, adaptacije, zamjena osigurača, utičnica i prekidača, montaža rasvjete te otklanjanje kvarova.",
-    long: "Izvodimo nove elektroinstalacije i obnavljamo postojeće u stanovima, kućama i poslovnim prostorima na području Zagreba i Slavonije. Radimo zamjenu dotrajalih instalacija i razvodnih ormarića, ugradnju utičnica, prekidača i rasvjete te traženje i otklanjanje kvarova.",
+    long: "Izvodimo nove elektroinstalacije i obnavljamo postojeće u stanovima, kućama i poslovnim prostorima. Radimo zamjenu dotrajalih instalacija i razvodnih ormarića, ugradnju utičnica, prekidača i rasvjete te traženje i otklanjanje kvarova.",
     items: [
       "Nove elektroinstalacije u stanovima, kućama i poslovnim prostorima",
       "Zamjena starih instalacija i dotrajalih razvodnih ormarića",
@@ -245,8 +245,8 @@ export const processSteps = [
  */
 export const faq = [
   {
-    q: "Koja područja pokrivate?",
-    a: "Radimo na dva područja: Zagreb s okolicom (Sesvete, Velika Gorica, Samobor, Zaprešić, Dugo Selo) te cijelu Slavoniju: Osijek, Slavonski Brod, Vinkovci, Vukovar, Đakovo, Županju, Našice i Požegu s okolnim mjestima. Ako niste sigurni pokrivamo li vašu lokaciju, nazovite i odmah ćemo reći.",
+    q: "Dolazite li na moju lokaciju?",
+    a: "Dostupnost dolaska ovisi o lokaciji i vrsti radova. Nazovite nas i odmah ćemo provjeriti možemo li preuzeti posao.",
   },
   {
     q: "Koliko brzo se javljate na upit?",

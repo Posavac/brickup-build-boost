@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { business, faq, seo, serviceAreas, services, siteUrl } from "@/lib/site";
+import { business, faq, seo, services, siteUrl } from "@/lib/site";
 
 // ---------------------------------------------------------------------------
 // GET /llms.txt
@@ -20,7 +20,7 @@ const body = `# ${business.name}
 > ${seo.description}
 
 ${business.name} je tim majstora koji izvodi električarske radove i završne obrte za privatne
-osobe i tvrtke na području Zagreba i Slavonije. Radove izvode provjereni registrirani majstori, a klijent ima jednu osobu za kontakt.
+osobe i tvrtke. Radove izvode provjereni registrirani majstori, a klijent ima jednu osobu za kontakt.
 
 ## Kontakt
 
@@ -40,10 +40,6 @@ ${service.long}
 ${service.items.map((item) => `- ${item}`).join("\n")}`,
   )
   .join("\n\n")}
-
-## Područja rada
-
-${serviceAreas.map((area) => `- **${area.region}:** ${area.cities.join(", ")}`).join("\n")}
 
 ## Kako do ponude
 

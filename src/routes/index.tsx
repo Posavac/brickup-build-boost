@@ -25,7 +25,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { useReveal } from "@/hooks/use-reveal";
 import {
   absoluteUrl,
-  allCities,
   business,
   company,
   faq,
@@ -35,7 +34,6 @@ import {
   navLinks,
   processSteps,
   seo,
-  serviceAreas,
   services,
   siteUrl,
 } from "@/lib/site";
@@ -74,18 +72,7 @@ export const Route = createFileRoute("/")({
       // manji tražilice i AI alati i dalje čitaju, jeftino je ostaviti.
       {
         name: "keywords",
-        content: [
-          "električar Zagreb",
-          "električar Slavonija",
-          "elektroinstalacije Zagreb",
-          "gletanje Zagreb",
-          "soboslikarstvo Zagreb",
-          "postavljanje laminata Zagreb",
-          "postavljanje vinila",
-          "kućni majstor Zagreb",
-          "majstor Osijek",
-          "adaptacija stana",
-        ].join(", "),
+        content: ["postavljanje vinila", "adaptacija stana"].join(", "),
       },
       { property: "og:title", content: seo.title },
       { property: "og:description", content: seo.description },
@@ -130,7 +117,7 @@ const reasons = [
   {
     icon: MapPin,
     title: "Pokrivamo dvije regije",
-    desc: "Zagreb s okolicom i cijela Slavonija. Dolazak dogovaramo odmah, bez čekanja tjednima.",
+    desc: "Dolazak dogovaramo odmah, bez čekanja tjednima.",
   },
   {
     icon: Building2,
@@ -237,7 +224,7 @@ function Index() {
   const galleryImages = Array.from({ length: activeService.imageCount }, (_, i) => ({
     thumb: `/images/${activeService.folder}/${activeService.folder}-${i + 1}-thumb.webp`,
     full: `/images/${activeService.folder}/${activeService.folder}-${i + 1}.webp`,
-    alt: `${activeService.title}, primjer izvedenog rada ${i + 1}, BrickUp Zagreb i Slavonija`,
+    alt: `${activeService.title}, primjer izvedenog rada ${i + 1}, BrickUp`,
   }));
 
   return (
@@ -308,14 +295,8 @@ function Index() {
         >
           <div className="relative mx-auto grid max-w-6xl gap-10 px-5 pt-16 pb-16 md:pt-24 md:pb-24 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:gap-16">
             <div>
-              <p className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium tracking-wider text-white/70 uppercase">
-                Zagreb i Slavonija
-              </p>
-              {/* Jedan H1 na stranici, s glavnim pojmom i lokacijom, to je
-                  najjači signal tražilici o čemu je stranica. */}
               <h1 className="mt-5 font-display text-4xl leading-[1.05] font-extrabold tracking-tight text-balance sm:text-5xl md:text-6xl">
-                Električarski radovi i završni obrti{" "}
-                <span className="text-brand">za Zagreb i Slavoniju</span>
+                Električarski radovi i završni obrti
               </h1>
               <p className="mt-5 max-w-xl text-base leading-relaxed text-white/75 sm:text-lg">
                 <strong className="font-display font-bold text-white/95">{business.tagline}</strong>{" "}
@@ -349,20 +330,10 @@ function Index() {
             {/* Dokaz umjesto dekoracije: stvarni podaci (tvrtka, OIB, jamstvo)
                 umjesto ilustracije koju nitko nije tražio. */}
             <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 text-sm">
-              <HeroFact
-                k={hasCompany ? company.legalName : business.name}
-                v="registrirana tvrtka"
-              />
+              <HeroFact k="50+" v="zadovoljnih klijenata" />
               <HeroFact k="2 godine" v="jamstvo na radove" />
               <HeroFact k="Fiksno" v="cijena prije početka" />
               <HeroFact k="Tim" v="ne pojedinac" />
-              {hasCompany && (
-                <div className="col-span-2 bg-secondary px-5 py-4">
-                  <p className="text-xs leading-relaxed text-white/50">
-                    OIB {company.oib} · odgovara direktor {company.director}
-                  </p>
-                </div>
-              )}
             </dl>
           </div>
         </section>
@@ -593,30 +564,23 @@ function Index() {
           </div>
         </section>
 
-        {/* PODRUČJA: dvije regije odvojene vertikalnom linijom umjesto dvije
-            zasebne "kartice", tekst nosi sadržaj, ne okvir oko njega. */}
+        {/* DOLAZAK: jednostavna provjera dostupnosti bez nabrajanja lokacija. */}
         <section id="podrucja" className="bg-muted/40 py-20 md:py-28">
           <div className="mx-auto max-w-6xl px-5">
             <h2 className="max-w-2xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
-              Gdje sve dolazimo
+              Dogovorimo dolazak
             </h2>
             <p className="mt-4 max-w-2xl text-muted-foreground">
-              Pokrivamo dvije regije. Ako vaše mjesto nije na popisu, a u blizini je nekog od
-              navedenih gradova, svejedno nazovite jer najvjerojatnije dolazimo.
+              Dostupnost ovisi o vrsti i opsegu radova. Nazovite nas i provjerit ćemo možemo li
+              preuzeti vaš posao.
             </p>
-            <Reveal className="mt-10 grid gap-10 divide-y divide-border md:grid-cols-2 md:gap-0 md:divide-x md:divide-y-0">
-              {serviceAreas.map((area, i) => (
-                <div key={area.region} className={i === 0 ? "md:pr-10" : "pt-10 md:pt-0 md:pl-10"}>
-                  <h3 className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
-                    <MapPin size={18} className="text-brand" strokeWidth={2.4} aria-hidden />
-                    {area.region}
-                  </h3>
-                  <p className="mt-3 leading-relaxed text-muted-foreground">
-                    {area.cities.join(", ")} i okolna mjesta.
-                  </p>
-                </div>
-              ))}
-            </Reveal>
+            <a
+              href={`tel:${business.phoneE164}`}
+              className="mt-6 inline-flex items-center gap-2 rounded-md bg-brand px-5 py-3 text-sm font-bold text-brand-foreground transition hover:brightness-95"
+            >
+              <Phone size={17} aria-hidden />
+              Nazovite {business.phoneDisplay}
+            </a>
           </div>
         </section>
 
@@ -631,8 +595,8 @@ function Index() {
                 Tim kojem možete vjerovati
               </h2>
               <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                BrickUp je tim majstora koji pokriva Zagreb i Slavoniju. Radimo i za privatne osobe
-                koje renoviraju svoj dom, i za tvrtke koje trebaju pouzdanog izvođača za veće
+                BrickUp je tim majstora za radove u domu i poslovnom prostoru. Radimo za privatne
+                osobe koje renoviraju svoj dom i za tvrtke koje trebaju pouzdanog izvođača za veće
                 projekte.
               </p>
               <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
@@ -876,17 +840,13 @@ function Index() {
                   />
                 </Field>
                 <Field label="Grad" required>
-                  <select name="grad" required className="form-input" defaultValue="">
-                    <option value="" disabled>
-                      Odaberite grad
-                    </option>
-                    {allCities.map((city) => (
-                      <option key={city} value={city}>
-                        {city}
-                      </option>
-                    ))}
-                    <option value="Ostalo">Ostalo</option>
-                  </select>
+                  <input
+                    name="grad"
+                    required
+                    autoComplete="address-level2"
+                    className="form-input"
+                    placeholder="Upišite grad"
+                  />
                 </Field>
                 <Field label="Vrsta posla" required className="sm:col-span-2">
                   <select name="vrsta" required className="form-input" defaultValue="">
@@ -939,9 +899,7 @@ function Index() {
           <div className="grid gap-6 sm:grid-cols-3 sm:items-center">
             <div>
               <Logo className="text-lg" />
-              <p className="mt-2 text-sm text-muted-foreground">
-                {business.tagline} Zagreb &amp; Slavonija.
-              </p>
+              <p className="mt-2 text-sm text-muted-foreground">{business.tagline}</p>
             </div>
             <div className="space-y-1 text-sm text-muted-foreground sm:text-center">
               <div>
@@ -987,16 +945,10 @@ function Index() {
               tvrtke s kojima surađujemo.
             </p>
           )}
-          {/* Popis usluga i gradova u podnožju: dodatni tekstualni signal
-              tražilici o opsegu posla i pokrivenosti. */}
+          {/* Kratki sažetak usluga u podnožju. */}
           <p className="mt-8 border-t border-border pt-6 text-xs leading-relaxed text-muted-foreground">
-            {business.name} izvodi{" "}
-            {services
-              .slice(0, -1)
-              .map((s) => s.accusative)
-              .join(", ")}{" "}
-            i {services[services.length - 1].accusative} na području gradova: {allCities.join(", ")}{" "}
-            i okolnih mjesta.
+            BrickUp izvodi električarske radove, gletanje, soboslikarstvo i poslove kućnog majstora.
+            Za dostupnost dolaska javite nam se telefonom ili putem obrasca.
           </p>
         </div>
       </footer>
