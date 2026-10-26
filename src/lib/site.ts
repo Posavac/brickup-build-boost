@@ -141,8 +141,8 @@ export const services: Service[] = [
     title: "Električarski radovi",
     accusative: "električarske radove",
     short:
-      "Kompletne elektroinstalacije, adaptacije, zamjena osigurača, utičnica i prekidača, montaža rasvjete te otklanjanje kvarova.",
-    long: "Izvodimo nove elektroinstalacije i obnavljamo postojeće u stanovima, kućama i poslovnim prostorima na području Zagreba i Slavonije. Radimo zamjenu dotrajalih instalacija i razvodnih ormarića, ugradnju utičnica, prekidača i rasvjete te traženje i otklanjanje kvarova.",
+      "Kompletne elektroinstalacije, adaptacije, zamjena osigurača, utičnica i prekidača, montaža rasvjete te otklanjanje kvarova. Izrađujemo i elektrotehničke projekte za sve vrste elektroinstalacija.",
+    long: "Izvodimo nove elektroinstalacije i obnavljamo postojeće u stanovima, kućama i poslovnim prostorima na području Zagreba i Slavonije. Radimo zamjenu dotrajalih instalacija i razvodnih ormarića, ugradnju utičnica, prekidača i rasvjete te traženje i otklanjanje kvarova. Uz izvedbu izrađujemo i elektrotehničke projekte za sve vrste elektroinstalacija.",
     items: [
       "Nove elektroinstalacije u stanovima, kućama i poslovnim prostorima",
       "Zamjena starih instalacija i dotrajalih razvodnih ormarića",
@@ -150,6 +150,7 @@ export const services: Service[] = [
       "Montaža rasvjete: stropne, zidne, LED trake i vanjska rasvjeta",
       "Traženje i otklanjanje kvarova na instalaciji",
       "Priprema instalacije za kuhinju, klima-uređaj, bojler i perilicu",
+      "Izrada elektrotehničkih projekata za sve vrste elektroinstalacija",
     ],
     folder: "struja",
     imageCount: 4,
