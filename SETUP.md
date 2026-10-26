@@ -1,4 +1,4 @@
-# BrickUp — backend + de-branding update
+# Verdia — backend + de-branding update
 
 ## Što je u ovom paketu
 
@@ -51,20 +51,20 @@ manje temeljito, ali bez tog rizika.
 ## Postavljanje Resend-a (slanje emaila)
 
 1. Idi na [resend.com](https://resend.com) i registriraj se s emailom na
-   koji želiš primati upite (npr. `luka.posavac091@gmail.com`).
+   koji želiš primati upite (npr. `brickupdoo@gmail.com`).
 2. **API Keys → Create API Key.** Kopiraj ključ (prikazuje se samo jednom).
 3. Postavi environment variable / secret na svom serveru:
    - `RESEND_API_KEY` = ključ iz koraka 2 (**obavezno**)
    - `LEAD_NOTIFY_EMAIL` = email na koji stižu upiti (opcionalno, default
-     je `luka.posavac091@gmail.com`)
+     je `brickupdoo@gmail.com`)
    - `LEAD_FROM_EMAIL` = "from" adresa (opcionalno, default
-     `BrickUp <onboarding@resend.dev>`)
+     `Verdia <onboarding@resend.dev>`)
    - Ako je tvoj server Cloudflare Worker: `wrangler secret put RESEND_API_KEY`
      (ili kroz Cloudflare dashboard → Worker → Settings → Variables).
    - Ako je obični Node server: dodaj u `.env` ili u panel hostinga.
 4. **Bitno ograničenje besplatnog plana:** bez verificirane domene, Resend
    dopušta slanje SAMO na email kojim si se registrirao na Resend (npr.
-   ako se registriraš s `luka.posavac091@gmail.com`, upiti stižu samo
+   ako se registriraš s `brickupdoo@gmail.com`, upiti stižu samo
    tamo — što je upravo ono što treba). Besplatni plan: 100 emaila/dan,
    3000/mjesec — više nego dovoljno za ovu stranicu.
 5. Kasnije, ako želiš slati s vlastite domene (npr. `upiti@brickup.hr`) ili

@@ -1,4 +1,4 @@
-# BrickUp — agent notes
+# Verdia — agent notes
 
 This is a TanStack Start (React) site for a craftsman/handyman business
 serving Zagreb and Slavonia. See `README.md` for the file-based routing

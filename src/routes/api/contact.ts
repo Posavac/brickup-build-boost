@@ -20,8 +20,8 @@ import { z } from "zod";
 //                          the setup notes shared alongside this file)
 // ---------------------------------------------------------------------------
 
-const DEFAULT_NOTIFY_EMAIL = "luka.posavac091@gmail.com";
-const DEFAULT_FROM_EMAIL = "BrickUp <onboarding@resend.dev>";
+const DEFAULT_NOTIFY_EMAIL = "brickupdoo@gmail.com";
+const DEFAULT_FROM_EMAIL = "Verdia <onboarding@resend.dev>";
 
 const leadSchema = z.object({
   ime: z.string().trim().min(2, "Unesite ime i prezime.").max(120),
@@ -117,7 +117,7 @@ export const Route = createFileRoute("/api/contact")({
 
         const subject = `Novi upit: ${data.vrsta} (${data.grad})`;
         const html = `
-          <h2 style="font-family:sans-serif">Novi upit s BrickUp stranice</h2>
+          <h2 style="font-family:sans-serif">Novi upit s Verdia stranice</h2>
           <table style="font-family:sans-serif;font-size:14px;border-collapse:collapse">
             <tr><td style="padding:4px 12px 4px 0"><strong>Ime i prezime</strong></td><td>${escapeHtml(data.ime)}</td></tr>
             <tr><td style="padding:4px 12px 4px 0"><strong>Telefon</strong></td><td>${escapeHtml(data.telefon)}</td></tr>

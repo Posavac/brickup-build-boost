@@ -30,7 +30,7 @@ const AI_CRAWLERS = [
 ];
 
 const body = [
-  "# robots.txt, BrickUp",
+  "# robots.txt, Verdia",
   "",
   "User-agent: *",
   "Allow: /",

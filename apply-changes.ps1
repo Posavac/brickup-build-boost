@@ -148,7 +148,7 @@ minimumReleaseAge = 86400
 
 # --- AGENTS.md ---
 @'
-# BrickUp - agent notes
+# Verdia - agent notes
 
 This is a TanStack Start (React) site for a craftsman/handyman business
 serving Zagreb and Slavonia. See `README.md` for the file-based routing
@@ -244,10 +244,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "BrickUp - Vas dom, nas zanat. Majstori za Zagreb i Slavoniju" },
+      { title: "Verdia - Vas dom, nas zanat. Majstori za Zagreb i Slavoniju" },
       { name: "description", content: "Keramika, gletanje, soboslikarstvo, struja i kucni majstor - tim majstora za Zagreb i Slavoniju." },
-      { name: "author", content: "BrickUp" },
-      { property: "og:title", content: "BrickUp - Vas dom, nas zanat." },
+      { name: "author", content: "Verdia" },
+      { property: "og:title", content: "Verdia - Vas dom, nas zanat." },
       { property: "og:description", content: "Tim majstora za zavrsne radove. Zagreb i Slavonija." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -299,8 +299,8 @@ New-Item -ItemType Directory -Force -Path "src\routes\api" | Out-Null
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
-const DEFAULT_NOTIFY_EMAIL = "luka.posavac091@gmail.com";
-const DEFAULT_FROM_EMAIL = "BrickUp <onboarding@resend.dev>";
+const DEFAULT_NOTIFY_EMAIL = "brickupdoo@gmail.com";
+const DEFAULT_FROM_EMAIL = "Verdia <onboarding@resend.dev>";
 
 const leadSchema = z.object({
   ime: z.string().trim().min(2, "Unesite ime i prezime.").max(120),
@@ -377,7 +377,7 @@ export const Route = createFileRoute("/api/contact")({
         const fromEmail = (await resolveEnvVar("LEAD_FROM_EMAIL")) || DEFAULT_FROM_EMAIL;
 
         const subject = "Novi upit - " + data.vrsta + " (" + data.grad + ")";
-        const html = "<h2 style=\"font-family:sans-serif\">Novi upit s BrickUp stranice</h2>" +
+        const html = "<h2 style=\"font-family:sans-serif\">Novi upit s Verdia stranice</h2>" +
           "<table style=\"font-family:sans-serif;font-size:14px;border-collapse:collapse\">" +
           "<tr><td style=\"padding:4px 12px 4px 0\"><strong>Ime i prezime</strong></td><td>" + escapeHtml(data.ime) + "</td></tr>" +
           "<tr><td style=\"padding:4px 12px 4px 0\"><strong>Telefon</strong></td><td>" + escapeHtml(data.telefon) + "</td></tr>" +

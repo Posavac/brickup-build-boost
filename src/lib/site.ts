@@ -32,11 +32,11 @@ export const absoluteUrl = (path: string) =>
   `${siteUrl}${path.startsWith("/") ? path : `/${path}`}`;
 
 export const business = {
-  name: "BrickUp",
+  name: "Verdia",
   tagline: "Vaš dom, naš zanat.",
   phoneDisplay: "091 359 2825",
   phoneE164: "+385913592825",
-  email: "luka.posavac091@gmail.com",
+  email: "brickupdoo@gmail.com",
 
   /**
    * WhatsApp. Broj u međunarodnom formatu, bez plusa i bez razmaka.
@@ -54,14 +54,14 @@ export const business = {
 };
 
 /**
- * Pravna osoba koja stoji iza BrickUpa: sklapa ugovore, izdaje račune i
+ * Pravna osoba koja stoji iza tvrtke Verdia: sklapa ugovore, izdaje račune i
  * odgovara klijentu za radove.
  *
  * ⚠️  POPUNI TOČNIM PODACIMA IZ SUDSKOG REGISTRA (sudreg.pravosudje.hr).
  * Zakon o elektroničkoj trgovini traži da stranica koja nudi usluge navede
  * puni naziv, sjedište, OIB i registar pružatelja usluge. Dok je `legalName`
  * prazan, stranica ne prikazuje ništa od ovoga i u podnožju i pravilima
- * privatnosti piše samo BrickUp.
+ * privatnosti piše samo Verdia.
  */
 export const company = {
   /** Puni naziv iz registra, npr. "Naziv d.o.o. za građevinske usluge" */
@@ -83,7 +83,7 @@ export const hasCompany = company.legalName.trim() !== "";
 export const dataController = hasCompany ? company.legalName : business.name;
 
 export const seo = {
-  title: "Električar i majstori za Zagreb i Slavoniju | BrickUp",
+  title: "Električar i majstori za Zagreb i Slavoniju | Verdia",
   description:
     "Električarski radovi, elektroinstalacije, gletanje, soboslikarstvo i kućni majstor za Zagreb i Slavoniju. Besplatna ponuda, odgovor u 24 sata. Nazovite 091 359 2825.",
   ogImage: "/og-image.jpg",
@@ -116,7 +116,7 @@ export type Service = {
   id: string;
   title: string;
   /**
-   * Naziv u akuzativu, za rečenice tipa "BrickUp izvodi ...".
+   * Naziv u akuzativu, za rečenice tipa "Verdia izvodi ...".
    * Potrebno jer se hrvatski naziv usluge ne može ispravno umetnuti u
    * rečenicu bez sklanjanja ("izvodi električarski radovi" nije hrvatski).
    */
@@ -345,7 +345,6 @@ export const navLinks = [
   { href: "#usluge", label: "Usluge" },
   { href: "#podovi", label: "Bojanje i podovi" },
   { href: "#kako-radimo", label: "Kako radimo" },
-  { href: "#galerija", label: "Galerija" },
   { href: "#podrucja", label: "Područja" },
   { href: "#pitanja", label: "Pitanja" },
   { href: "#kontakt", label: "Kontakt" },

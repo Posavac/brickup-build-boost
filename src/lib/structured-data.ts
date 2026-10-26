@@ -149,7 +149,7 @@ export const homePageJsonLd = {
       "@type": "HowTo",
       "@id": `${siteUrl}/#kako-radimo`,
       name: "Kako do ponude i izvedbe radova",
-      description: "Četiri koraka od upita do gotovog posla kod BrickUpa, za Zagreb i Slavoniju.",
+      description: "Četiri koraka od upita do gotovog posla kod tvrtke Verdia, za Zagreb i Slavoniju.",
       inLanguage: "hr-HR",
       step: processSteps.map((step, index) => ({
         "@type": "HowToStep",

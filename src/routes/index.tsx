@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowUpRight,
@@ -17,7 +17,6 @@ import {
   ShieldCheck,
   Receipt,
   Sparkles,
-  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
@@ -81,7 +80,7 @@ export const Route = createFileRoute("/")({
       { property: "og:image:height", content: "630" },
       {
         property: "og:image:alt",
-        content: "Majstor BrickUpa tijekom radova na stanu",
+        content: "Majstor tvrtke Verdia tijekom radova na stanu",
       },
       { name: "twitter:title", content: seo.title },
       { name: "twitter:description", content: seo.description },
@@ -91,9 +90,6 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: siteUrl },
-      // Prva slika galerije je ujedno najveći element na ekranu kod scrolla
-      // preload joj skraćuje vrijeme prikaza.
-      { rel: "preload", as: "image", href: "/images/struja/struja-1-thumb.webp" },
     ],
   }),
   component: Index,
@@ -135,9 +131,9 @@ function Logo({ className = "" }: { className?: string }) {
     <div
       className={`inline-flex items-baseline gap-0.5 font-display font-extrabold tracking-tight ${className}`}
     >
-      <span>BrickU</span>
+      <span>Verdi</span>
       <span className="relative">
-        p
+        a
         <ArrowUpRight className="absolute -top-3 -right-3 text-brand" strokeWidth={3} size={16} />
       </span>
     </div>
@@ -147,18 +143,6 @@ function Logo({ className = "" }: { className?: string }) {
 function Index() {
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState(0);
-  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
-
-  // Escape zatvara galeriju, bez toga se na tipkovnici iz nje nije moglo izaći.
-  useEffect(() => {
-    if (!lightbox) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setLightbox(null);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [lightbox]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -203,45 +187,14 @@ function Index() {
     }
   };
 
-  const activeService = services[activeTab];
-  const galleryImages = Array.from({ length: activeService.imageCount }, (_, i) => ({
-    thumb: `/images/${activeService.folder}/${activeService.folder}-${i + 1}-thumb.webp`,
-    full: `/images/${activeService.folder}/${activeService.folder}-${i + 1}.webp`,
-    alt: `${activeService.title}, primjer izvedenog rada ${i + 1}, BrickUp Zagreb i Slavonija`,
-  }));
-
   return (
     <div className="min-h-screen bg-background pb-16 font-sans text-foreground md:pb-0">
       <Toaster richColors position="top-center" />
 
-      {lightbox && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
-          onClick={() => setLightbox(null)}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Uvećani prikaz slike"
-        >
-          <button
-            className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
-            onClick={() => setLightbox(null)}
-            aria-label="Zatvori sliku"
-          >
-            <X size={20} />
-          </button>
-          <img
-            src={lightbox.src}
-            alt={lightbox.alt}
-            className="max-h-[90vh] max-w-[90vw] rounded-xl object-contain shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
-      )}
-
       {/* NAV */}
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-          <a href="#top" className="text-xl text-foreground" aria-label="BrickUp, početak stranice">
+          <a href="#top" className="text-xl text-foreground" aria-label="Verdia, početak stranice">
             <Logo />
           </a>
           <nav
@@ -499,71 +452,6 @@ function Index() {
           </div>
         </section>
 
-        {/* GALERIJA */}
-        <section id="galerija" className="py-20 md:py-28">
-          <div className="mx-auto max-w-6xl px-5">
-            <p className="text-sm font-semibold tracking-wider text-brand uppercase">Galerija</p>
-            <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-              Naši radovi
-            </h2>
-            <p className="mt-4 max-w-xl text-muted-foreground">
-              Fotografije s izvedenih poslova. Odaberite uslugu i kliknite na sliku za veći prikaz.
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-2">
-              {services.map((service, idx) => {
-                const Icon = serviceIcons[service.id];
-                const selected = activeTab === idx;
-                return (
-                  <button
-                    key={service.id}
-                    type="button"
-                    aria-pressed={selected}
-                    aria-controls="galerija-mreza"
-                    onClick={() => setActiveTab(idx)}
-                    className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
-                      selected
-                        ? "bg-foreground text-background shadow"
-                        : "border border-border bg-card text-muted-foreground hover:border-brand hover:text-foreground"
-                    }`}
-                  >
-                    <span
-                      className="flex h-6 w-6 items-center justify-center rounded-full"
-                      style={{ background: service.accentBg }}
-                    >
-                      <Icon size={13} style={{ color: service.accentFg }} strokeWidth={2.5} />
-                    </span>
-                    {service.title}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div id="galerija-mreza" className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {galleryImages.map((image, i) => (
-                <button
-                  key={image.full}
-                  type="button"
-                  onClick={() => setLightbox({ src: image.full, alt: image.alt })}
-                  className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-border bg-muted"
-                  aria-label={`Otvori sliku: ${activeService.title} ${i + 1}`}
-                >
-                  <img
-                    src={image.thumb}
-                    alt={image.alt}
-                    width={800}
-                    height={600}
-                    className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                    loading={i < 3 ? "eager" : "lazy"}
-                    decoding="async"
-                  />
-                  <span className="absolute inset-0 bg-black/0 transition group-hover:bg-black/20" />
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* PODRUČJA */}
         <section id="podrucja" className="bg-muted/40 py-20 md:py-28">
           <div className="mx-auto max-w-6xl px-5">
@@ -609,7 +497,7 @@ function Index() {
                 Tim kojem možete vjerovati
               </h2>
               <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                BrickUp je tim majstora koji pokriva Zagreb i Slavoniju. Radimo i za privatne osobe
+                Verdia je tim majstora koji pokriva Zagreb i Slavoniju. Radimo i za privatne osobe
                 koje renoviraju svoj dom, i za tvrtke koje trebaju pouzdanog izvođača za veće
                 projekte.
               </p>
@@ -644,7 +532,7 @@ function Index() {
         <section id="zasto" className="bg-muted/40 py-20 md:py-28">
           <div className="mx-auto max-w-6xl px-5">
             <p className="text-sm font-semibold tracking-wider text-brand uppercase">
-              Zašto BrickUp
+              Zašto Verdia
             </p>
             <h2 className="mt-2 max-w-2xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
               Zašto ljudi biraju nas
