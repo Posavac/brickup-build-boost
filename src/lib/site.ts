@@ -22,7 +22,7 @@
 //
 // Na Cloudflareu se može postaviti i preko varijable okoline SITE_URL.
 // ---------------------------------------------------------------------------
-const FALLBACK_URL = "https://brickup.hr";
+const FALLBACK_URL = "https://verdia.space";
 
 export const siteUrl = (
   typeof process !== "undefined" && process.env?.SITE_URL ? process.env.SITE_URL : FALLBACK_URL

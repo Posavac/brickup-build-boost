@@ -8,7 +8,7 @@
  * Da uključite mjerenje, dodajte JEDAN od ovih u <head> (src/routes/__root.tsx):
  *
  * Plausible (jednostavnije, bez cookie bannera):
- * <script defer data-domain="brickup.hr" src="https://plausible.io/js/script.js"></script>
+ * <script defer data-domain="verdia.space" src="https://plausible.io/js/script.js"></script>
  *
  * GA4:
  * <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script>

@@ -67,7 +67,7 @@ manje temeljito, ali bez tog rizika.
    ako se registriraš s `brickupdoo@gmail.com`, upiti stižu samo
    tamo — što je upravo ono što treba). Besplatni plan: 100 emaila/dan,
    3000/mjesec — više nego dovoljno za ovu stranicu.
-5. Kasnije, ako želiš slati s vlastite domene (npr. `upiti@brickup.hr`) ili
+5. Kasnije, ako želiš slati s vlastite domene (npr. `upiti@verdia.space`) ili
    na više adresa, treba verificirati domenu na resend.com/domains — javi
    se kad dođeš do toga, provest ćemo te kroz to.
 
