@@ -196,6 +196,25 @@ export const services: Service[] = [
     accentFg: "#DB2777",
   },
   {
+    id: "podovi",
+    title: "Laminat i vinil",
+    accusative: "postavljanje laminata i vinila",
+    short:
+      "Postavljanje vinila i laminata u sve oblike i uzorke, na pripremljenoj i ravnoj podlozi.",
+    long: "Postavljamo laminat i vinil u svim oblicima i uzorcima, u stanovima, kućama i poslovnim prostorima. Prije postave izravnavamo podlogu, a na kraju ugrađujemo letvice. Najčešće to radimo u istom terminu s gletanjem i bojanjem.",
+    items: [
+      "Postava laminata i vinila u sve oblike i uzorke",
+      "Klasična, dijagonalna i postava riblja kost",
+      "Izravnavanje podloge prije postave",
+      "Ugradnja podnih letvica i prijelaznih profila",
+      "Postava u stanovima, kućama i poslovnim prostorima",
+    ],
+    folder: "podovi",
+    imageCount: 0,
+    accentBg: "#FEF3C7",
+    accentFg: "#D97706",
+  },
+  {
     id: "kucni-majstor",
     title: "Kućni majstor",
     accusative: "poslove kućnog majstora",
@@ -206,7 +225,6 @@ export const services: Service[] = [
       "Postavljanje zavjesa, karniša, slika i zrcala",
       "Zamjena brava, kvaka i šarki",
       "Popravci vrata, prozora i roleta",
-      "Postava laminata i vinila te ugradnja letvica",
       "Sitni zahvati po dogovoru, više stvari u jednom dolasku",
     ],
     folder: "majstor",

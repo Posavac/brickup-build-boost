@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   Receipt,
   Sparkles,
+  Layers,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
@@ -100,6 +101,7 @@ const serviceIcons: Record<string, LucideIcon> = {
   elektroinstalacije: Zap,
   gletanje: PaintBucket,
   soboslikarstvo: Brush,
+  podovi: Layers,
   "kucni-majstor": Wrench,
 };
 
@@ -281,7 +283,7 @@ function Index() {
                 fotografije i kvadrature u pravilu možemo dati okvirnu cijenu još isti dan.
               </p>
             </div>
-            <ul className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <ul className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
               {services.map((service) => {
                 const Icon = serviceIcons[service.id];
                 return (
@@ -313,12 +315,12 @@ function Index() {
               </h2>
             </div>
             <p className="max-w-md text-muted-foreground">
-              Četiri područja, jedan dogovor. Provjerene majstore koordiniramo mi, a vi imate jednu
+              Pet područja, jedan dogovor. Provjerene majstore koordiniramo mi, a vi imate jednu
               osobu za kontakt od ponude do predaje.
             </p>
           </div>
 
-          <div className="mt-12 grid gap-4 sm:grid-cols-2">
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 sm:[&>article:last-child:nth-child(odd)]:col-span-2">
             {services.map((service) => {
               const Icon = serviceIcons[service.id];
               return (
