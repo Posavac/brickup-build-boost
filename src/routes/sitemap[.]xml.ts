@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { publishedPosts } from "@/lib/blog";
 import { absoluteUrl, seo, siteUrl } from "@/lib/site";
 
 // ---------------------------------------------------------------------------
@@ -35,6 +36,22 @@ ${images
   )
   .join("\n")}
   </url>
+  <url>
+    <loc>${absoluteUrl("/blog")}</loc>
+    <lastmod>${publishedPosts[0]?.updated ?? publishedPosts[0]?.date ?? lastmod}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+${publishedPosts
+  .map(
+    (post) => `  <url>
+    <loc>${absoluteUrl(`/blog/${post.slug}`)}</loc>
+    <lastmod>${post.updated ?? post.date}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`,
+  )
+  .join("\n")}
   <url>
     <loc>${absoluteUrl("/pravne-informacije")}</loc>
     <lastmod>${lastmod}</lastmod>

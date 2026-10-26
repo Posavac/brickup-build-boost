@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { business, faq, seo, serviceAreas, services, siteUrl } from "@/lib/site";
+import { publishedPosts } from "@/lib/blog";
+import { absoluteUrl, business, faq, seo, serviceAreas, services, siteUrl } from "@/lib/site";
 
 // ---------------------------------------------------------------------------
 // GET /llms.txt
@@ -49,6 +50,10 @@ ${serviceAreas.map((area) => `- **${area.region}:** ${area.cities.join(", ")}`).
 
 Upit se šalje kroz obrazac na ${siteUrl}/#kontakt ili pozivom na ${business.phoneDisplay}.
 Ponuda je besplatna i bez obveze, a odgovor stiže unutar 24 sata.
+
+## Članci
+
+${publishedPosts.map((post) => `- [${post.title}](${absoluteUrl(`/blog/${post.slug}`)}): ${post.description}`).join("\n")}
 
 ## Česta pitanja
 

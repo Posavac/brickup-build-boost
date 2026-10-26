@@ -14,6 +14,7 @@
  * Provjera nakon objave: https://search.google.com/test/rich-results
  */
 
+import type { BlogPost } from "./blog";
 import {
   absoluteUrl,
   business,
@@ -90,10 +91,14 @@ export const homePageJsonLd = {
       email: business.email,
       image: absoluteUrl(seo.ogImage),
       logo: absoluteUrl("/icon-512.png"),
-      // Bez ulice: tvrtka radi na terenu, pa se navodi samo država, a
-      // pokrivenost ide kroz areaServed. Kad dobiješ adresu sjedišta,
-      // dopuni streetAddress, addressLocality i postalCode.
-      address: { "@type": "PostalAddress", addressCountry: "HR" },
+      // Sjedište tvrtke iz company; pokrivenost područja ide kroz areaServed.
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "HR",
+        addressLocality: "Čepin",
+        postalCode: "31431",
+        streetAddress: "Ivana Gundulića 5",
+      },
       areaServed,
       knowsLanguage: ["hr"],
       contactPoint: {
@@ -159,4 +164,52 @@ export const homePageJsonLd = {
       })),
     },
   ],
+};
+
+/** JSON-LD za članak: BlogPosting + BreadcrumbList (+ FAQPage ako članak ima pitanja). */
+export const blogPostJsonLd = (post: BlogPost) => {
+  const url = absoluteUrl(`/blog/${post.slug}`);
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${url}#article`,
+        headline: post.title,
+        description: post.description,
+        url,
+        mainEntityOfPage: url,
+        inLanguage: "hr-HR",
+        datePublished: post.date,
+        dateModified: post.updated ?? post.date,
+        keywords: post.keywords.join(", "),
+        image: absoluteUrl(seo.ogImage),
+        author: { "@id": BUSINESS_ID },
+        publisher: { "@id": BUSINESS_ID },
+        isPartOf: { "@id": WEBSITE_ID },
+        about: { "@id": `${siteUrl}/#usluga-${post.service}` },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: business.name, item: siteUrl },
+          { "@type": "ListItem", position: 2, name: "Blog", item: absoluteUrl("/blog") },
+          { "@type": "ListItem", position: 3, name: post.title, item: url },
+        ],
+      },
+      ...(post.faq?.length
+        ? [
+            {
+              "@type": "FAQPage",
+              inLanguage: "hr-HR",
+              mainEntity: post.faq.map((entry) => ({
+                "@type": "Question",
+                name: entry.q,
+                acceptedAnswer: { "@type": "Answer", text: entry.a },
+              })),
+            },
+          ]
+        : []),
+    ],
+  };
 };
