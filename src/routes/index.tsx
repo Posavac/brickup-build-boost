@@ -107,7 +107,7 @@ const reasons = [
   {
     icon: Users,
     title: "Tim, ne pojedinac",
-    desc: "Više majstora i jedan dogovor, pa posao ide brže nego kad sami slažete raspored nekoliko obrtnika.",
+    desc: "Tim od više od 5 ljudi i jedan dogovor, pa posao ide brže nego kad sami slažete raspored nekoliko obrtnika.",
   },
   {
     icon: MapPin,
@@ -497,7 +497,7 @@ function Index() {
                 Tim kojem možete vjerovati
               </h2>
               <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                Verdia je tim majstora koji pokriva Zagreb i Slavoniju. Radimo i za privatne osobe
+                Verdia je tim od više od 5 majstora koji pokriva Zagreb i Slavoniju. Radimo i za privatne osobe
                 koje renoviraju svoj dom, i za tvrtke koje trebaju pouzdanog izvođača za veće
                 projekte.
               </p>
