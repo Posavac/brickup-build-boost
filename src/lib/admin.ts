@@ -9,8 +9,8 @@
 // Imena osnivača i dogovor o potrošnji: od svakog prihoda 20 % ide u fond
 // osnivača, podijeljeno na jednake dijelove; ostatak ostaje firmi.
 export const FOUNDERS = [
-  { value: "osnivac_1", label: "Osnivač 1" },
-  { value: "osnivac_2", label: "Osnivač 2" },
+  { value: "osnivac_1", label: "Luka Posavac" },
+  { value: "osnivac_2", label: "Zvonimir Kišurek" },
 ] as const;
 export const FOUNDERS_SHARE = 0.2;
 
