@@ -4,6 +4,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
 import { toast } from "sonner";
 
+import { CalendarTab } from "@/components/admin/calendar-tab";
 import { EntityTable, eur, type Mutate } from "@/components/admin/entity-table";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
@@ -15,7 +16,8 @@ import { FOUNDERS, FOUNDERS_SHARE, TABLES, type AdminData, type Row } from "@/li
 // /admin (admin.brickup.hr preusmjerava ovamo, vidi src/server.ts)
 //
 // Interni panel za osnivače: Dugovi, Troškovnik (planirani troškovi i
-// inventar) i Portfolio (stanje računa i fond osnivača). Podaci se ne
+// inventar), Portfolio (stanje računa i fond osnivača) i Kalendar (Google
+// kalendari osnivača, tko je kada slobodan). Podaci se ne
 // renderiraju na serveru, stranica ih dohvaća s /api/admin/data tek nakon
 // prijave.
 // ---------------------------------------------------------------------------
@@ -84,12 +86,16 @@ function AdminPage() {
               <TabsTrigger value="dugovi">Dugovi</TabsTrigger>
               <TabsTrigger value="troskovnik">Troškovnik</TabsTrigger>
               <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
+              <TabsTrigger value="kalendar">Kalendar</TabsTrigger>
             </TabsList>
             <TabsContent value="dugovi">
               <Debts data={query.data} mutate={mutate} />
             </TabsContent>
             <TabsContent value="troskovnik">
               <Costs data={query.data} mutate={mutate} />
+            </TabsContent>
+            <TabsContent value="kalendar">
+              <CalendarTab />
             </TabsContent>
             <TabsContent value="portfolio">
               <Portfolio data={query.data} mutate={mutate} />
@@ -102,6 +108,7 @@ function AdminPage() {
 }
 
 function Login({ onDone }: { onDone: () => void }) {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -110,10 +117,10 @@ function Login({ onDone }: { onDone: () => void }) {
     const res = await fetch("/api/admin/session", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ password }),
+      body: JSON.stringify({ username, password }),
     });
     if (res.ok) onDone();
-    else setError("Pogrešna lozinka.");
+    else setError("Pogrešno korisničko ime ili lozinka.");
   };
 
   return (
@@ -121,8 +128,15 @@ function Login({ onDone }: { onDone: () => void }) {
       <form onSubmit={submit} className="grid w-full max-w-xs gap-3">
         <h1 className="text-lg font-bold">BrickUp admin</h1>
         <Input
-          type="password"
           autoFocus
+          autoComplete="username"
+          placeholder="Korisničko ime"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <Input
+          type="password"
+          autoComplete="current-password"
           placeholder="Lozinka"
           value={password}
           onChange={(e) => setPassword(e.target.value)}

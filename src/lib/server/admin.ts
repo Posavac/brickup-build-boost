@@ -7,6 +7,7 @@ import { resolveEnvVar } from "@/lib/server/env";
 // Server-side helpers for the admin panel: session cookie and Supabase access.
 //
 // Env:
+//   ADMIN_USERNAME             , login username (default "admin")
 //   ADMIN_PASSWORD             , shared password for the founders
 //   SUPABASE_URL               , https://<ref>.supabase.co
 //   SUPABASE_SERVICE_ROLE_KEY  , service role key (bypasses RLS; the tables
@@ -40,10 +41,17 @@ async function safeEqual(a: string, b: string): Promise<boolean> {
   return ha === hb;
 }
 
-export async function checkPassword(password: string): Promise<boolean> {
-  const expected = await resolveEnvVar("ADMIN_PASSWORD");
+export async function checkLogin(username: string, password: string): Promise<boolean> {
+  const [expectedUser, expected] = await Promise.all([
+    resolveEnvVar("ADMIN_USERNAME"),
+    resolveEnvVar("ADMIN_PASSWORD"),
+  ]);
   if (!expected) return false;
-  return safeEqual(password, expected);
+  const [userOk, passOk] = await Promise.all([
+    safeEqual(username, expectedUser ?? "admin"),
+    safeEqual(password, expected),
+  ]);
+  return userOk && passOk;
 }
 
 export async function sessionCookie(): Promise<string> {

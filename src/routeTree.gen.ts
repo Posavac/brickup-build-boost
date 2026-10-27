@@ -21,6 +21,7 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiContactRouteImport } from './routes/api/contact'
 import { Route as ApiAdminSessionRouteImport } from './routes/api/admin/session'
 import { Route as ApiAdminDataRouteImport } from './routes/api/admin/data'
+import { Route as ApiAdminCalendarRouteImport } from './routes/api/admin/calendar'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -82,6 +83,11 @@ const ApiAdminDataRoute = ApiAdminDataRouteImport.update({
   path: '/api/admin/data',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminCalendarRoute = ApiAdminCalendarRouteImport.update({
+  id: '/api/admin/calendar',
+  path: '/api/admin/calendar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/api/contact': typeof ApiContactRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
+  '/api/admin/calendar': typeof ApiAdminCalendarRoute
   '/api/admin/data': typeof ApiAdminDataRoute
   '/api/admin/session': typeof ApiAdminSessionRoute
 }
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/api/contact': typeof ApiContactRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
+  '/api/admin/calendar': typeof ApiAdminCalendarRoute
   '/api/admin/data': typeof ApiAdminDataRoute
   '/api/admin/session': typeof ApiAdminSessionRoute
 }
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   '/api/contact': typeof ApiContactRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
+  '/api/admin/calendar': typeof ApiAdminCalendarRoute
   '/api/admin/data': typeof ApiAdminDataRoute
   '/api/admin/session': typeof ApiAdminSessionRoute
 }
@@ -139,6 +148,7 @@ export interface FileRouteTypes {
     | '/api/contact'
     | '/blog/$slug'
     | '/blog/'
+    | '/api/admin/calendar'
     | '/api/admin/data'
     | '/api/admin/session'
   fileRoutesByTo: FileRoutesByTo
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/api/contact'
     | '/blog/$slug'
     | '/blog'
+    | '/api/admin/calendar'
     | '/api/admin/data'
     | '/api/admin/session'
   id:
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/api/contact'
     | '/blog/$slug'
     | '/blog/'
+    | '/api/admin/calendar'
     | '/api/admin/data'
     | '/api/admin/session'
   fileRoutesById: FileRoutesById
@@ -182,6 +194,7 @@ export interface RootRouteChildren {
   ApiContactRoute: typeof ApiContactRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
+  ApiAdminCalendarRoute: typeof ApiAdminCalendarRoute
   ApiAdminDataRoute: typeof ApiAdminDataRoute
   ApiAdminSessionRoute: typeof ApiAdminSessionRoute
 }
@@ -272,6 +285,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAdminDataRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/calendar': {
+      id: '/api/admin/calendar'
+      path: '/api/admin/calendar'
+      fullPath: '/api/admin/calendar'
+      preLoaderRoute: typeof ApiAdminCalendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -286,6 +306,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiContactRoute: ApiContactRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
+  ApiAdminCalendarRoute: ApiAdminCalendarRoute,
   ApiAdminDataRoute: ApiAdminDataRoute,
   ApiAdminSessionRoute: ApiAdminSessionRoute,
 }

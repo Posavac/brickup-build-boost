@@ -14,6 +14,26 @@ export const FOUNDERS = [
 ] as const;
 export const FOUNDERS_SHARE = 0.2;
 
+// Google kalendari koji se prikazuju u kartici Kalendar. Svaki se povezuje
+// tajnom iCal adresom u env varijabli (Google Calendar → Postavke →
+// kalendar → "Tajna adresa u iCal formatu"). POSLOVI je neobavezan
+// zajednički kalendar poslova; dan je "zauzet" za osnivača ako ima događaj
+// u svom kalendaru.
+export const CALENDARS = [
+  { value: "osnivac_1", label: FOUNDERS[0].label, env: "GCAL_ICS_OSNIVAC_1" },
+  { value: "osnivac_2", label: FOUNDERS[1].label, env: "GCAL_ICS_OSNIVAC_2" },
+  { value: "poslovi", label: "Poslovi", env: "GCAL_ICS_POSLOVI", optional: true },
+] as const;
+
+export type CalendarEvent = {
+  who: string;
+  title: string;
+  allDay: boolean;
+  // YYYY-MM-DD for all-day events (end exclusive), ISO timestamp otherwise.
+  start: string;
+  end: string;
+};
+
 export type FieldType = "text" | "number" | "date" | "bool" | "select";
 
 export type Field = {
