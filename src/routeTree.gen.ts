@@ -14,10 +14,14 @@ import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as PrivatnostRouteImport } from './routes/privatnost'
 import { Route as PravneInformacijeRouteImport } from './routes/pravne-informacije'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiContactRouteImport } from './routes/api/contact'
+import { Route as ApiAdminSessionRouteImport } from './routes/api/admin/session'
+import { Route as ApiAdminDataRouteImport } from './routes/api/admin/data'
+import { Route as ApiAdminCalendarRouteImport } from './routes/api/admin/calendar'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -44,6 +48,11 @@ const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
   path: '/llms.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -64,9 +73,25 @@ const ApiContactRoute = ApiContactRouteImport.update({
   path: '/api/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminSessionRoute = ApiAdminSessionRouteImport.update({
+  id: '/api/admin/session',
+  path: '/api/admin/session',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminDataRoute = ApiAdminDataRouteImport.update({
+  id: '/api/admin/data',
+  path: '/api/admin/data',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminCalendarRoute = ApiAdminCalendarRouteImport.update({
+  id: '/api/admin/calendar',
+  path: '/api/admin/calendar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/pravne-informacije': typeof PravneInformacijeRoute
   '/privatnost': typeof PrivatnostRoute
@@ -75,9 +100,13 @@ export interface FileRoutesByFullPath {
   '/api/contact': typeof ApiContactRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
+  '/api/admin/calendar': typeof ApiAdminCalendarRoute
+  '/api/admin/data': typeof ApiAdminDataRoute
+  '/api/admin/session': typeof ApiAdminSessionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/pravne-informacije': typeof PravneInformacijeRoute
   '/privatnost': typeof PrivatnostRoute
@@ -86,10 +115,14 @@ export interface FileRoutesByTo {
   '/api/contact': typeof ApiContactRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
+  '/api/admin/calendar': typeof ApiAdminCalendarRoute
+  '/api/admin/data': typeof ApiAdminDataRoute
+  '/api/admin/session': typeof ApiAdminSessionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/pravne-informacije': typeof PravneInformacijeRoute
   '/privatnost': typeof PrivatnostRoute
@@ -98,11 +131,15 @@ export interface FileRoutesById {
   '/api/contact': typeof ApiContactRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
+  '/api/admin/calendar': typeof ApiAdminCalendarRoute
+  '/api/admin/data': typeof ApiAdminDataRoute
+  '/api/admin/session': typeof ApiAdminSessionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/llms.txt'
     | '/pravne-informacije'
     | '/privatnost'
@@ -111,9 +148,13 @@ export interface FileRouteTypes {
     | '/api/contact'
     | '/blog/$slug'
     | '/blog/'
+    | '/api/admin/calendar'
+    | '/api/admin/data'
+    | '/api/admin/session'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/llms.txt'
     | '/pravne-informacije'
     | '/privatnost'
@@ -122,9 +163,13 @@ export interface FileRouteTypes {
     | '/api/contact'
     | '/blog/$slug'
     | '/blog'
+    | '/api/admin/calendar'
+    | '/api/admin/data'
+    | '/api/admin/session'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/llms.txt'
     | '/pravne-informacije'
     | '/privatnost'
@@ -133,10 +178,14 @@ export interface FileRouteTypes {
     | '/api/contact'
     | '/blog/$slug'
     | '/blog/'
+    | '/api/admin/calendar'
+    | '/api/admin/data'
+    | '/api/admin/session'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   PravneInformacijeRoute: typeof PravneInformacijeRoute
   PrivatnostRoute: typeof PrivatnostRoute
@@ -145,6 +194,9 @@ export interface RootRouteChildren {
   ApiContactRoute: typeof ApiContactRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
+  ApiAdminCalendarRoute: typeof ApiAdminCalendarRoute
+  ApiAdminDataRoute: typeof ApiAdminDataRoute
+  ApiAdminSessionRoute: typeof ApiAdminSessionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -184,6 +236,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LlmsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -212,11 +271,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/session': {
+      id: '/api/admin/session'
+      path: '/api/admin/session'
+      fullPath: '/api/admin/session'
+      preLoaderRoute: typeof ApiAdminSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/data': {
+      id: '/api/admin/data'
+      path: '/api/admin/data'
+      fullPath: '/api/admin/data'
+      preLoaderRoute: typeof ApiAdminDataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/calendar': {
+      id: '/api/admin/calendar'
+      path: '/api/admin/calendar'
+      fullPath: '/api/admin/calendar'
+      preLoaderRoute: typeof ApiAdminCalendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
   PravneInformacijeRoute: PravneInformacijeRoute,
   PrivatnostRoute: PrivatnostRoute,
@@ -225,6 +306,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApiContactRoute: ApiContactRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
+  ApiAdminCalendarRoute: ApiAdminCalendarRoute,
+  ApiAdminDataRoute: ApiAdminDataRoute,
+  ApiAdminSessionRoute: ApiAdminSessionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

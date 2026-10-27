@@ -19,6 +19,17 @@ Key pieces:
   leads via Resend. Requires the `RESEND_API_KEY` environment variable
   (see `.env.example`). The `website` field is a honeypot: the schema must
   stay permissive so the handler can drop spam silently with a fake 200.
+- `src/routes/admin.tsx` — internal founders' panel (Dugovi, Troškovnik,
+  Portfolio, Kalendar), served on `admin.<domain>` (`src/server.ts` redirects that
+  subdomain's root to `/admin`). Tables are defined once in `src/lib/admin.ts`
+  (drives both the UI and server validation) and in
+  `supabase/migrations/`; data goes through `src/routes/api/admin/*` to
+  Supabase with the service role key. Kalendar reads both founders' Google
+  Calendars read-only via their secret iCal URLs (`GCAL_ICS_*`,
+  `src/lib/server/calendar.ts`). Login is `ADMIN_USERNAME` (default
+  `admin`) + `ADMIN_PASSWORD`. Needs `ADMIN_PASSWORD`,
+  `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`. The 20 % founders' share
+  rule and founder names live in `FOUNDERS` / `FOUNDERS_SHARE`.
 - `src/routes/robots[.]txt.ts`, `sitemap[.]xml.ts`, `llms[.]txt.ts` —
   generated rather than static so they always track the configured domain.
   The `[.]` in the filename is TanStack's escape for a literal dot.

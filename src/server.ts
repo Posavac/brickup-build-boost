@@ -39,6 +39,11 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    // admin.<domena> otvara admin panel: korijen poddomene vodi na /admin.
+    const url = new URL(request.url);
+    if (url.hostname.startsWith("admin.") && url.pathname === "/") {
+      return Response.redirect(new URL("/admin", url).toString(), 302);
+    }
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
