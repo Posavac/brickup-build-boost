@@ -32,7 +32,15 @@ export default defineConfig(async ({ command }) => {
     // Imported lazily so a plain `vite dev` never needs the `nitro`
     // package loaded at all.
     const { nitro } = await import("nitro/vite");
-    plugins.push(nitro({ preset: "cloudflare-module" }));
+    plugins.push(
+      nitro({
+        preset: "cloudflare-module",
+        // Ime Workera na Cloudflareu, mora se poklapati s imenom projekta u
+        // Workers & Pages (Workers Builds odbija deploy ako se razlikuju).
+        // keep_vars: deploy ne briše varijable postavljene na dashboardu.
+        cloudflare: { wrangler: { name: "brickup", keep_vars: true } },
+      }),
+    );
   }
 
   // Eksplicitni tip: bez njega TypeScript "transformer" proširi u obični
