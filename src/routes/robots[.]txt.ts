@@ -35,6 +35,7 @@ const body = [
   "User-agent: *",
   "Allow: /",
   "Disallow: /api/",
+  "Disallow: /admin",
   "",
   "# Roboti AI asistenata i tražilica, izričito dopušteni",
   ...AI_CRAWLERS.flatMap((bot) => [`User-agent: ${bot}`, "Allow: /", ""]),
