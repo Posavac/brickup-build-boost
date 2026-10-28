@@ -70,7 +70,9 @@ export async function loadEvents(
 ): Promise<{ events: CalendarEvent[]; errors: string[] }> {
   const results = await Promise.all(
     CALENDARS.map(async (c) => {
-      const url = await resolveEnvVar(c.env);
+      // "-" (or empty) means "not connected", for dashboards that require a value.
+      const raw = (await resolveEnvVar(c.env))?.trim();
+      const url = raw && raw !== "-" ? raw : undefined;
       if (!url && "optional" in c) return { events: [] };
       if (!url) return { events: [], error: `${c.label}: kalendar nije povezan (${c.env}).` };
       try {
