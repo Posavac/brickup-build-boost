@@ -281,7 +281,7 @@ export const faq = [
   },
   {
     q: "Možete li preuzeti cijelu adaptaciju stana?",
-    a: "Možemo. Kad se posao sastoji od više faza, od elektroinstalacija i gletanja do bojanja i sitnih radova, sve pokrivamo mi, u jednom dogovoru. Imate jednu osobu za kontakt i jedan raspored, a mi koordiniramo majstore za svaku fazu.",
+    a: "Možemo. Kad se posao sastoji od više faza, od elektroinstalacija i gletanja do bojanja i sitnih radova, sve pokrivamo mi, u jednom dogovoru. Jedan tim, jedan dogovor i jedna osoba za kontakt.",
   },
   {
     q: "Radite li i za tvrtke?",

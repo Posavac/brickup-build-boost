@@ -109,12 +109,12 @@ const reasons = [
   {
     icon: Users,
     title: "Tim, ne pojedinac",
-    desc: "Tim od više od 5 ljudi i jedan dogovor, pa posao ide brže nego kad sami slažete raspored nekoliko obrtnika.",
+    desc: "Dva majstora, jedan tim i jedan dogovor. Ne morate sami usklađivati nekoliko obrtnika.",
   },
   {
     icon: MapPin,
     title: "Pokrivamo dvije regije",
-    desc: "Zagreb s okolicom i cijela Slavonija. Dolazak dogovaramo odmah, bez čekanja tjednima.",
+    desc: "Zagreb s okolicom i cijela Slavonija. Odgovor i besplatna ponuda u 24 sata.",
   },
   {
     icon: Building2,
@@ -279,8 +279,8 @@ function Index() {
                 </a>
               </div>
               <p className="mt-6 text-sm leading-relaxed text-white/55">
-                Najbrže do cijene: pošaljite nam par fotografija prostora na WhatsApp. Iz
-                fotografije i kvadrature u pravilu možemo dati okvirnu cijenu još isti dan.
+                Najbrže do cijene: pošaljite nam par fotografija prostora na WhatsApp. Javljamo
+                se s ponudom unutar 24 sata. Cijena je fiksna, bez skrivenih troškova.
               </p>
             </div>
             <ul className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -315,8 +315,8 @@ function Index() {
               </h2>
             </div>
             <p className="max-w-md text-muted-foreground">
-              Pet područja, jedan dogovor. Provjerene majstore koordiniramo mi, a vi imate jednu
-              osobu za kontakt od ponude do predaje.
+              Pet područja, jedan tim, jedan dogovor. Imate jednu osobu za kontakt od
+              ponude do predaje.
             </p>
           </div>
 
@@ -499,7 +499,7 @@ function Index() {
                 Tim kojem možete vjerovati
               </h2>
               <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                Verdia je tim od više od 5 majstora koji pokriva Zagreb i Slavoniju. Radimo i za privatne osobe
+                Verdia su dva majstora, električar i kućni majstor, za Zagreb i Slavoniju. Radimo i za privatne osobe
                 koje renoviraju svoj dom, i za tvrtke koje trebaju pouzdanog izvođača za veće
                 projekte.
               </p>
