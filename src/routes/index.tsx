@@ -131,13 +131,10 @@ const reasons = [
 function Logo({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`inline-flex items-baseline gap-0.5 font-display font-extrabold tracking-tight ${className}`}
+      className={`inline-flex items-center gap-2 font-display font-extrabold tracking-tight ${className}`}
     >
-      <span>Verdi</span>
-      <span className="relative">
-        a
-        <ArrowUpRight className="absolute -top-3 -right-3 text-brand" strokeWidth={3} size={16} />
-      </span>
+      <img src="/logo-mark.png" alt="" width={32} height={32} className="h-[1.6em] w-[1.6em]" />
+      <span>Verdia</span>
     </div>
   );
 }
